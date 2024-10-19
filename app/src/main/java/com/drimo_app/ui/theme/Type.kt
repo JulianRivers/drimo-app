@@ -2,10 +2,23 @@ package com.drimo_app.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.drimo_app.R
 
+val Aleo = FontFamily(
+    Font(R.font.aleo_regular, FontWeight.Normal),
+    Font(R.font.aleo_bold, FontWeight.Bold),
+    Font(R.font.aleo_thin, FontWeight.Thin),
+    Font(R.font.aleo_black, FontWeight.Black),
+    Font(R.font.aleo_light, FontWeight.Light),
+    Font(R.font.aleo_medium, FontWeight.Medium),
+    Font(R.font.aleo_italic, FontWeight.Normal, FontStyle.Italic),
+
+)
 // Set of Material typography styles to start with
 val Typography = Typography(
     bodyLarge = TextStyle(
