@@ -20,28 +20,83 @@ val Aleo = FontFamily(
 
 )
 // Set of Material typography styles to start with
-val Typography = Typography(
-    bodyLarge = TextStyle(
-        fontFamily = FontFamily.Default,
+val AppTypography = Typography(
+    displayLarge = TextStyle( // h1
+        fontFamily = Aleo,
+        fontWeight = FontWeight.Light,
+        fontSize = 85.sp,
+        letterSpacing = (-1.5).sp
+    ),
+    displayMedium = TextStyle( // h2
+        fontFamily = Aleo,
+        fontWeight = FontWeight.Light,
+        fontSize = 53.sp,
+        letterSpacing = (-0.5).sp
+    ),
+    displaySmall = TextStyle( // h3
+        fontFamily = Aleo,
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
-    )
-    /* Other default text styles to override
-    titleLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 22.sp,
-        lineHeight = 28.sp,
+        fontSize = 42.sp,
         letterSpacing = 0.sp
     ),
-    labelSmall = TextStyle(
-        fontFamily = FontFamily.Default,
+    headlineMedium = TextStyle( // h4
+        fontFamily = Aleo,
+        fontWeight = FontWeight.Normal,
+        fontSize = 30.sp,
+        letterSpacing = 0.25.sp
+    ),
+    headlineSmall = TextStyle( // h5
+        fontFamily = Aleo,
+        fontWeight = FontWeight.Normal,
+        fontSize = 21.sp,
+        letterSpacing = 0.sp
+    ),
+    titleLarge = TextStyle( // h6
+        fontFamily = Aleo,
         fontWeight = FontWeight.Medium,
-        fontSize = 11.sp,
-        lineHeight = 16.sp,
+        fontSize = 18.sp,
+        letterSpacing = 0.15.sp
+    ),
+    titleMedium = TextStyle( // subtitle1
+        fontFamily = Aleo,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
+        letterSpacing = 0.15.sp
+    ),
+    titleSmall = TextStyle( // subtitle2
+        fontFamily = Aleo,
+        fontWeight = FontWeight.Medium,
+        fontSize = 12.sp,
+        letterSpacing = 0.1.sp
+    ),
+    bodyLarge = TextStyle( // body1
+        fontFamily = Aleo,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
         letterSpacing = 0.5.sp
+    ),
+    bodyMedium = TextStyle( // body2
+        fontFamily = Aleo,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp,
+        letterSpacing = 0.25.sp
+    ),
+    bodySmall = TextStyle( // caption
+        fontFamily = Aleo,
+        fontWeight = FontWeight.Normal,
+        fontSize = 11.sp,
+        letterSpacing = 0.4.sp
+    ),
+    labelLarge = TextStyle( // button
+        fontFamily = Aleo,
+        fontWeight = FontWeight.Medium,
+        fontSize = 12.sp,
+        letterSpacing = 1.25.sp
+    ),
+    labelSmall = TextStyle( // overline
+        fontFamily = Aleo,
+        fontWeight = FontWeight.Normal,
+        fontSize = 9.sp,
+        letterSpacing = 1.5.sp
     )
-    */
 )

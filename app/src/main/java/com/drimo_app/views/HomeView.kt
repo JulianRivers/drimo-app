@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -19,7 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
-import com.drimo_app.components.Space
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -46,17 +47,15 @@ fun HomeView(navController: NavController){
 
 @Composable
 fun ContentHomeView(navController: NavController){
-    val id = 123
     var opcional by remember { mutableStateOf("") }
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        Space()
+        Text(text = "Whereas disregard and contempt for human rights have resulted",  style = MaterialTheme.typography.titleLarge)
+
         TextField(value = opcional, onValueChange = {opcional=it}, label = { Text(text = "Opcional") })
-//        MainButton(name = "Detail view", backColor = Color.Red, color = Color.White, onClick = {
-//            navController.navigate("Detail/${id}/?${opcional}")
-//        } )
+
     }
 }
