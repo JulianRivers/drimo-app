@@ -23,11 +23,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.drimo_app.R
 import com.drimo_app.components.MainButton
 import com.drimo_app.components.MainTextField
 import com.drimo_app.components.SpaceH
+import com.drimo_app.viewmodels.inicio.LoginViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -39,12 +41,10 @@ fun LoginView(navController: NavController) {
 
 @Composable
 fun ContentLoginView(navController: NavController) {
-    var correo by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-
+    val loginViewModel: LoginViewModel = LoginViewModel()
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
-            painter = painterResource(id = R.drawable.background), // Reemplaza con tu imagen
+            painter = painterResource(id = R.drawable.background),
             contentDescription = null,
             modifier = Modifier.fillMaxSize()
         )
@@ -56,27 +56,27 @@ fun ContentLoginView(navController: NavController) {
             Text(text = "Bienvenido a Drimo", style = MaterialTheme.typography.headlineMedium)
             SpaceH(size = 100.dp)
             MainTextField(
-                value = correo,
-                onValueChange = { correo = it },
+                value = loginViewModel.correo,
+                onValueChange = { loginViewModel.onCorreoChange(it) },
                 label = "Correo electronico",
                 keyboardType = KeyboardType.Email
             )
             SpaceH()
             MainTextField(
-                value = password,
-                onValueChange = { password = it },
+                value = loginViewModel.password,
+                onValueChange = { loginViewModel.onPasswordChange(it) },
                 label = "Contraseña",
                 keyboardType = KeyboardType.Password,
                 visualTransformation = PasswordVisualTransformation(),
             )
             SpaceH(size = 15.dp)
             MainButton(
-                text = "Comencemos", onClick = {},
+                text = "Comencemos",
+                onClick = { loginViewModel.iniciarSesion() },
                 modifierButton = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 30.dp),
-                modifierText = Modifier
-                    .padding(vertical = 15.dp)
+                modifierText = Modifier.padding(vertical = 15.dp)
             )
             SpaceH(size = 10.dp)
             Text(
