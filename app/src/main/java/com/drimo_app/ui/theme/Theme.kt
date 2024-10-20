@@ -13,7 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
     primary = LightPurple,
-    secondary = MidnightBlue,
+    secondary = LightGrey,
     background = DarkBlue,
     surface = DarkBlue,
     onPrimary = White,
@@ -24,13 +24,14 @@ private val DarkColorScheme = darkColorScheme(
 
 private val LightColorScheme = lightColorScheme(
     primary = LightPurple,
-    secondary = MidnightBlue,
-    background = White,
-    surface = LightGrey,
+    secondary = LightGrey,
+    background = DarkBlue,
+    surface = DarkBlue,
     onPrimary = White,
-    onSecondary = DarkBlue,
-    onBackground = DarkBlue,
-    onSurface = DarkBlue
+    onSecondary = White,
+    onBackground = White,
+    onSurface = White,
+
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -44,7 +45,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun Drimo_appTheme(
+fun DrimoAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
