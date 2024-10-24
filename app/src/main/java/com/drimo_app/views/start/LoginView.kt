@@ -28,15 +28,16 @@ import com.drimo_app.viewmodels.inicio.LoginViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun LoginView(navController: NavController) {
+fun LoginView(navController: NavController, loginViewModel: LoginViewModel) {
     Scaffold() {
-        ContentLoginView(navController)
+        ContentLoginView(loginViewModel)
     }
 }
 
 @Composable
-fun ContentLoginView(navController: NavController) {
-    val loginViewModel: LoginViewModel = LoginViewModel()
+fun ContentLoginView(loginViewModel: LoginViewModel) {
+    val state = loginViewModel.state
+
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.background),
@@ -51,15 +52,15 @@ fun ContentLoginView(navController: NavController) {
             Text(text = "Bienvenido a Drimo", style = MaterialTheme.typography.headlineMedium)
             SpaceH(size = 100.dp)
             MainTextField(
-                value = loginViewModel.correo,
-                onValueChange = { loginViewModel.onCorreoChange(it) },
+                value = state.correo,
+                onValueChange = { loginViewModel.onValue(it, "correo") },
                 label = "Correo electronico",
                 keyboardType = KeyboardType.Email
             )
             SpaceH()
             MainTextField(
-                value = loginViewModel.password,
-                onValueChange = { loginViewModel.onPasswordChange(it) },
+                value = state.password,
+                onValueChange = { loginViewModel.onValue(it, "password") },
                 label = "Contraseña",
                 keyboardType = KeyboardType.Password,
                 visualTransformation = PasswordVisualTransformation(),

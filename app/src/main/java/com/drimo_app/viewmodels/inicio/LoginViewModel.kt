@@ -5,19 +5,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.drimo_app.model.start.LoginState
 
 class LoginViewModel : ViewModel() {
-    var correo by mutableStateOf("")
-        private set
-    var password by mutableStateOf("")
+    var state by mutableStateOf(LoginState())
         private set
 
-    fun onCorreoChange(newCorreo: String) {
-        correo = newCorreo
-    }
-
-    fun onPasswordChange(newPassword: String) {
-        password = newPassword
+    fun onValue(value: String, text: String) {
+        when (text) {
+            "correo" -> state = state.copy(correo = value)
+            "password" -> state = state.copy(password = value)
+        }
     }
 
     fun iniciarSesion() {

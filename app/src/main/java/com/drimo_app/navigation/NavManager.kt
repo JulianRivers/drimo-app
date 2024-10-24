@@ -4,14 +4,15 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.drimo_app.viewmodels.inicio.LoginViewModel
 import com.example.botoneapp.views.inicio.LoginView
 
 @Composable
-fun NavManager(){
+fun NavManager(loginViewModel: LoginViewModel) {
     val navController = rememberNavController()
-    NavHost(navController=navController, startDestination = "Login"){
+    NavHost(navController = navController, startDestination = "Login") {
         composable(route = "Login") {
-            LoginView(navController)
+            LoginView(navController, loginViewModel)
         }
 
         //ejemplo de navegación con deep links
