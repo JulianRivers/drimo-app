@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.botoneapp.views.inicio.LoginView
+import com.example.botoneapp.views.inicio.RegistroView
 
 @Composable
 fun NavManager(){
@@ -13,6 +14,11 @@ fun NavManager(){
         composable(route = "Login") {
             LoginView(navController)
         }
+
+        composable(route = "Registro") {
+            RegistroView(navController)
+        }
+
 
         //ejemplo de navegación con deep links
 //        composable(route = "Detail/{id}/?{opcional}", arguments = listOf(
