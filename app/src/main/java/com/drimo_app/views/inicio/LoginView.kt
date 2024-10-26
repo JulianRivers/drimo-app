@@ -58,7 +58,7 @@ fun ContentLoginView(navController: NavController) {
             MainTextField(
                 value = loginViewModel.correo,
                 onValueChange = { loginViewModel.onCorreoChange(it) },
-                label = "Correo electronico",
+                label = "Correo electrónico",
                 keyboardType = KeyboardType.Email
             )
             SpaceH()
@@ -87,7 +87,7 @@ fun ContentLoginView(navController: NavController) {
             SpaceH(size = 200.dp)
             Row {
                 Text(
-                    text = "¿No tienes una cuentas? ",
+                    text = "¿No tienes una cuenta? ",
                     color = MaterialTheme.colorScheme.secondary,
                     style = MaterialTheme.typography.bodyLarge
                 )
