@@ -6,20 +6,21 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.drimo_app.model.app.Routes
 import com.drimo_app.viewmodels.inicio.LoginViewModel
+import com.drimo_app.viewmodels.inicio.RegisterViewModel
 import com.drimo_app.views.start.LoginView
-import com.drimo_app.views.start.RegistroView
+import com.drimo_app.views.start.RegisterView
 
 @Composable
-fun NavManager(loginViewModel: LoginViewModel) {
+fun NavManager(loginViewModel: LoginViewModel, registerViewModel: RegisterViewModel) {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = Routes.Login) {
+    NavHost(navController = navController, startDestination = Routes.Login.route) {
         composable(route = Routes.Login.route) {
             LoginView(navController, loginViewModel)
         }
         
         composable(route = Routes.Register.route) {
-            RegistroView(navController)
+            RegisterView(navController, registerViewModel)
         }
 
 

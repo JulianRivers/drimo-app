@@ -23,18 +23,18 @@ import com.drimo_app.R
 import com.drimo_app.components.MainButton
 import com.drimo_app.components.MainTextField
 import com.drimo_app.components.SpaceH
-import com.drimo_app.viewmodels.inicio.RegistroViewModel
+import com.drimo_app.viewmodels.inicio.RegisterViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun RegistroView(navController: NavController) {
+fun RegisterView(navController: NavController, registerViewModel: RegisterViewModel) {
     Scaffold() {
-        ContentRegistroView(navController)
+        ContentRegisterView(navController, registerViewModel)
     }
 }
 @Composable
-fun ContentRegistroView(navController: NavController) {
-    val registroViewModel: RegistroViewModel = RegistroViewModel()
+fun ContentRegisterView(navController: NavController, registerViewModel: RegisterViewModel) {
+    val state = registerViewModel.state
 
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
@@ -50,23 +50,23 @@ fun ContentRegistroView(navController: NavController) {
             Text(text = "Bienvenido a Drimo", style = MaterialTheme.typography.headlineMedium)
             SpaceH(size = 100.dp)
             MainTextField(
-                value = registroViewModel.correo,
-                onValueChange = { registroViewModel.onCorreoChange(it) },
+                value = state.correo,
+                onValueChange = { registerViewModel.onValue(it, "correo") },
                 label = "Correo electrónico",
                 keyboardType = KeyboardType.Email
             )
             SpaceH()
             MainTextField(
-                value = registroViewModel.password,
-                onValueChange = { registroViewModel.onPasswordChange(it) },
+                value = state.password,
+                onValueChange = { registerViewModel.onValue(it, "password") },
                 label = "Contraseña",
                 keyboardType = KeyboardType.Password,
                 visualTransformation = PasswordVisualTransformation(),
             )
             SpaceH()
             MainTextField(
-                value = registroViewModel.confirmPassword,
-                onValueChange = { registroViewModel.onConfirmPasswordChange(it) },
+                value = state.confirmPassword,
+                onValueChange = { registerViewModel.onValue(it, "confirmPassword") },
                 label = "Confirmar contraseña",
                 keyboardType = KeyboardType.Password,
                 visualTransformation = PasswordVisualTransformation(),
@@ -74,7 +74,7 @@ fun ContentRegistroView(navController: NavController) {
             SpaceH(size = 15.dp)
             MainButton(
                 text = "Crear cuenta",
-                onClick = { registroViewModel.registrarCuenta() },
+                onClick = { registerViewModel.registrarCuenta() },
                 modifierButton = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 30.dp),

@@ -82,7 +82,7 @@ fun ContentLoginView(navController: NavController, loginViewModel: LoginViewMode
                 style = MaterialTheme.typography.bodyLarge
             )
             SpaceH(size = 200.dp)
-            Row (modifier = Modifier.clickable {  navController.navigate(Routes.Register) }){
+            Row (modifier = Modifier.clickable {  navController.navigate(Routes.Register.route) }){
                 Text(
                     text = "¿No tienes una cuenta? ",
                     color = MaterialTheme.colorScheme.secondary,
