@@ -1,2 +1,2 @@
-package com.example.botoneapp.views.blog
+package com.drimo_app.views.blog
 

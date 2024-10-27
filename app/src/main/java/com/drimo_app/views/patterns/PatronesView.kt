@@ -1,2 +1,2 @@
-package com.example.botoneapp.views.patrones
+package com.drimo_app.views.patterns
 

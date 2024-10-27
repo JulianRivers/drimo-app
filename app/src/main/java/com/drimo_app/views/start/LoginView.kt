@@ -1,4 +1,4 @@
-package com.example.botoneapp.views.inicio
+package com.drimo_app.views.start
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
@@ -30,14 +30,13 @@ import com.drimo_app.viewmodels.inicio.LoginViewModel
 @Composable
 fun LoginView(navController: NavController, loginViewModel: LoginViewModel) {
     Scaffold() {
-        ContentLoginView(loginViewModel)
+        ContentLoginView(navController, loginViewModel)
     }
 }
 
 @Composable
-fun ContentLoginView(loginViewModel: LoginViewModel) {
+fun ContentLoginView(navController: NavController, loginViewModel: LoginViewModel) {
     val state = loginViewModel.state
-
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.background),
@@ -68,7 +67,7 @@ fun ContentLoginView(loginViewModel: LoginViewModel) {
             SpaceH(size = 15.dp)
             MainButton(
                 text = "Comencemos",
-                onClick = { loginViewModel.iniciarSesion() },
+                onClick = { loginViewModel.iniciarSesion(navController) },
                 modifierButton = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 30.dp),

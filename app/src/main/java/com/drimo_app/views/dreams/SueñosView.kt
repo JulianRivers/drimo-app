@@ -1,2 +1,2 @@
-package com.example.botoneapp.views.sueños
+package com.drimo_app.views.dreams
 
