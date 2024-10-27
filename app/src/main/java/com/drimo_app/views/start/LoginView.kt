@@ -2,6 +2,7 @@ package com.drimo_app.views.start
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,12 +20,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.drimo_app.R
 import com.drimo_app.components.MainButton
 import com.drimo_app.components.MainTextField
 import com.drimo_app.components.SpaceH
+import com.drimo_app.model.app.Routes
 import com.drimo_app.viewmodels.inicio.LoginViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -81,7 +82,7 @@ fun ContentLoginView(navController: NavController, loginViewModel: LoginViewMode
                 style = MaterialTheme.typography.bodyLarge
             )
             SpaceH(size = 200.dp)
-            Row {
+            Row (modifier = Modifier.clickable {  navController.navigate(Routes.Register) }){
                 Text(
                     text = "¿No tienes una cuenta? ",
                     color = MaterialTheme.colorScheme.secondary,
