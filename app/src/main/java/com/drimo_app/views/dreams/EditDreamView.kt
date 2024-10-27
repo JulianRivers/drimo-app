@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
@@ -30,21 +31,17 @@ import com.drimo_app.R
 import com.drimo_app.components.MainButton
 import com.drimo_app.components.MainTextField
 import com.drimo_app.components.SpaceH
-import com.drimo_app.viewmodels.dreams.AddDreamViewModel
-
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun AddDreamView(navController: NavController, addDreamViewModel: AddDreamViewModel) {
+fun EditDreamView(navController: NavController) {
     Scaffold() {
-        ContentAddDreamView(navController, addDreamViewModel)
+        ContentEditDreamView(navController)
     }
 }
 
 @Composable
-fun ContentAddDreamView(navController: NavController, addDreamViewModel: AddDreamViewModel) {
-    val state = addDreamViewModel.state
-
+fun ContentEditDreamView(navController: NavController) {
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.background_2),
@@ -57,18 +54,18 @@ fun ContentAddDreamView(navController: NavController, addDreamViewModel: AddDrea
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             SpaceH(size = 120.dp)
-            Text(text = "Registra tus sueños", style = MaterialTheme.typography.headlineMedium)
+            Text(text = "Edita tu sueño", style = MaterialTheme.typography.headlineMedium)
             SpaceH(size = 50.dp)
             MainTextField(
-                value = state.title,
-                onValueChange = { addDreamViewModel.onValue(it, "title") },
+                value = "Me cai de un avión",
+                onValueChange = {  },
                 label = "Titulo",
                 keyboardType = KeyboardType.Text
             )
             SpaceH(size = 15.dp)
             MainTextField(
-                value = state.description,
-                onValueChange = { addDreamViewModel.onValue(it, "description") },
+                value = "Estaba en un avión camino a la casa de julian cuando la cola del avión explota y me caigo",
+                onValueChange = { },
                 label = "Descripción",
                 keyboardType = KeyboardType.Text,
                 height = 160.dp,
@@ -92,13 +89,7 @@ fun ContentAddDreamView(navController: NavController, addDreamViewModel: AddDrea
                 )
                 MainButton(
                     text = "+",
-                    onClick = {
-                        if (tagInput.value.isNotBlank() && tags.size < 3) {
-                            tags.add(tagInput.value)
-                            addDreamViewModel.onValue(tags.toList(), "tags")
-                            tagInput.value = "" // Limpiar el campo después de agregar
-                        }
-                    },
+                    onClick = { },
                     modifierButton = Modifier.height(50.dp)
                 )
             }
@@ -132,28 +123,34 @@ fun ContentAddDreamView(navController: NavController, addDreamViewModel: AddDrea
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Checkbox(
                             checked = sleepFactors[index],
-                            onCheckedChange = { isChecked ->
-                                sleepFactors[index] = isChecked
-                                addDreamViewModel.onValue(
-                                    sleepFactors.mapIndexedNotNull { i, checked ->
-                                        if (checked) factorLabels[i] else null
-                                    },
-                                    "sleepFactors"
-                                )
-                            }
+                            onCheckedChange = { }
                         )
                         Text(text = label)
                     }
                 }
             }
             SpaceH(size = 15.dp)
-            MainButton(
-                text = "Guardar sueño",
-                onClick = { addDreamViewModel.addDream() },
-                modifierButton = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 30.dp).height(50.dp)
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                MainButton(
+                    text = "Editar sueño",
+                    onClick = { },
+                    modifierButton = Modifier
+                        .weight(0.9f)
+                        .padding(horizontal = 12.dp)
+                        .height(50.dp)
+                )
+                MainButton(
+                    text = "Eliminar sueño",
+                    onClick = { },
+                    modifierButton = Modifier
+                        .weight(0.9f)
+                        .padding(horizontal = 12.dp)
+                        .height(50.dp)
+                )
+            }
         }
     }
 }

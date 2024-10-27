@@ -9,6 +9,7 @@ import com.drimo_app.viewmodels.dreams.AddDreamViewModel
 import com.drimo_app.viewmodels.inicio.LoginViewModel
 import com.drimo_app.viewmodels.inicio.RegisterViewModel
 import com.drimo_app.views.dreams.AddDreamView
+import com.drimo_app.views.dreams.EditDreamView
 import com.drimo_app.views.start.LoginView
 import com.drimo_app.views.start.RegisterView
 
@@ -27,6 +28,10 @@ fun NavManager(loginViewModel: LoginViewModel, registerViewModel: RegisterViewMo
 
         composable(route = Routes.AddDream.route) {
             AddDreamView(navController, addDreamViewModel)
+        }
+
+        composable(route = Routes.EditDream.route) {
+            EditDreamView(navController)
         }
 
 
