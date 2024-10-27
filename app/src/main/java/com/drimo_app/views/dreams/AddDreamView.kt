@@ -19,18 +19,19 @@ import androidx.navigation.NavController
 import com.drimo_app.R
 import com.drimo_app.components.MainTextField
 import com.drimo_app.components.SpaceH
+import com.drimo_app.viewmodels.dreams.AddDreamViewModel
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun AgregarSueñoView(navController: NavController) {
+fun AddDreamView(navController: NavController, addDreamViewModel: AddDreamViewModel) {
     Scaffold() {
-        ContentAgregarSueñoView(navController)
+        ContentAddDreamView(navController, addDreamViewModel)
     }
 }
 
 @Composable
-fun ContentAgregarSueñoView(navController: NavController) {
+fun ContentAddDreamView(navController: NavController, addDreamViewModel: AddDreamViewModel) {
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.background_2),

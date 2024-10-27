@@ -2,9 +2,11 @@ package com.drimo_app.views.start
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -23,6 +25,7 @@ import com.drimo_app.R
 import com.drimo_app.components.MainButton
 import com.drimo_app.components.MainTextField
 import com.drimo_app.components.SpaceH
+import com.drimo_app.model.app.Routes
 import com.drimo_app.viewmodels.inicio.RegisterViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -50,7 +53,7 @@ fun ContentRegisterView(navController: NavController, registerViewModel: Registe
             Text(text = "Bienvenido a Drimo", style = MaterialTheme.typography.headlineMedium)
             SpaceH(size = 100.dp)
             MainTextField(
-                value = state.correo,
+                value = state.email,
                 onValueChange = { registerViewModel.onValue(it, "correo") },
                 label = "Correo electrónico",
                 keyboardType = KeyboardType.Email
@@ -74,18 +77,20 @@ fun ContentRegisterView(navController: NavController, registerViewModel: Registe
             SpaceH(size = 15.dp)
             MainButton(
                 text = "Crear cuenta",
-                onClick = { registerViewModel.registrarCuenta() },
+                onClick = { registerViewModel.registerAccount() },
                 modifierButton = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 30.dp),
                 modifierText = Modifier.padding(vertical = 15.dp)
             )
             SpaceH(size = 200.dp)
-            Text(
-                text = "Iniciar sesión",
-                color = MaterialTheme.colorScheme.secondary,
-                style = MaterialTheme.typography.bodyLarge
-            )
+            Row (modifier = Modifier.clickable {  navController.navigate(Routes.Login.route) }){
+                Text(
+                    text = "Iniciar sesión",
+                    color = MaterialTheme.colorScheme.secondary,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
         }
     }
 }

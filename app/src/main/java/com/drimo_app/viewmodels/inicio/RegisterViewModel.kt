@@ -13,12 +13,12 @@ class RegisterViewModel: ViewModel() {
 
     fun onValue(value: String, text: String) {
         when (text) {
-            "correo" -> state = state.copy(correo = value)
+            "email" -> state = state.copy(email = value)
             "password" -> state = state.copy(password = value)
             "confirmPassword" -> state = state.copy(confirmPassword = value)
         }
     }
 
-    fun registrarCuenta() {
+    fun registerAccount() {
     }
 }
