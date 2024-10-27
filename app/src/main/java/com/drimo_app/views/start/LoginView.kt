@@ -19,6 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.drimo_app.R
 import com.drimo_app.components.MainButton
@@ -82,7 +83,7 @@ fun ContentLoginView(navController: NavController, loginViewModel: LoginViewMode
             SpaceH(size = 200.dp)
             Row {
                 Text(
-                    text = "¿No tienes una cuentas? ",
+                    text = "¿No tienes una cuenta? ",
                     color = MaterialTheme.colorScheme.secondary,
                     style = MaterialTheme.typography.bodyLarge
                 )
