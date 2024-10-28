@@ -1,7 +1,8 @@
-package com.example.botoneapp.views.inicio
+package com.drimo_app.views.start
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,35 +14,31 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.drimo_app.R
 import com.drimo_app.components.MainButton
 import com.drimo_app.components.MainTextField
 import com.drimo_app.components.SpaceH
-import com.drimo_app.viewmodels.inicio.LoginViewModel
+import com.drimo_app.model.app.Routes
+import com.drimo_app.viewmodels.inicio.RegisterViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun LoginView(navController: NavController) {
+fun RegisterView(navController: NavController, registerViewModel: RegisterViewModel) {
     Scaffold() {
-        ContentLoginView(navController)
+        ContentRegisterView(navController, registerViewModel)
     }
 }
-
 @Composable
-fun ContentLoginView(navController: NavController) {
-    val loginViewModel: LoginViewModel = LoginViewModel()
+fun ContentRegisterView(navController: NavController, registerViewModel: RegisterViewModel) {
+    val state = registerViewModel.state
+
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.background),
@@ -56,44 +53,41 @@ fun ContentLoginView(navController: NavController) {
             Text(text = "Bienvenido a Drimo", style = MaterialTheme.typography.headlineMedium)
             SpaceH(size = 100.dp)
             MainTextField(
-                value = loginViewModel.correo,
-                onValueChange = { loginViewModel.onCorreoChange(it) },
-                label = "Correo electronico",
+                value = state.email,
+                onValueChange = { registerViewModel.onValue(it, "correo") },
+                label = "Correo electrónico",
                 keyboardType = KeyboardType.Email
             )
             SpaceH()
             MainTextField(
-                value = loginViewModel.password,
-                onValueChange = { loginViewModel.onPasswordChange(it) },
+                value = state.password,
+                onValueChange = { registerViewModel.onValue(it, "password") },
                 label = "Contraseña",
+                keyboardType = KeyboardType.Password,
+                visualTransformation = PasswordVisualTransformation(),
+            )
+            SpaceH()
+            MainTextField(
+                value = state.confirmPassword,
+                onValueChange = { registerViewModel.onValue(it, "confirmPassword") },
+                label = "Confirmar contraseña",
                 keyboardType = KeyboardType.Password,
                 visualTransformation = PasswordVisualTransformation(),
             )
             SpaceH(size = 15.dp)
             MainButton(
-                text = "Comencemos",
-                onClick = { loginViewModel.iniciarSesion() },
+                text = "Crear cuenta",
+                onClick = { registerViewModel.registerAccount() },
                 modifierButton = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 30.dp),
                 modifierText = Modifier.padding(vertical = 15.dp)
             )
-            SpaceH(size = 10.dp)
-            Text(
-                text = "Ingresar como invitado",
-                color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.bodyLarge
-            )
             SpaceH(size = 200.dp)
-            Row {
+            Row (modifier = Modifier.clickable {  navController.navigate(Routes.Login.route) }){
                 Text(
-                    text = "¿No tienes una cuentas? ",
+                    text = "Iniciar sesión",
                     color = MaterialTheme.colorScheme.secondary,
-                    style = MaterialTheme.typography.bodyLarge
-                )
-                Text(
-                    text = "Regístrate!",
-                    color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.bodyLarge
                 )
             }
