@@ -5,8 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.drimo_app.model.dreams.AddDreamState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class AddDreamViewModel: ViewModel() {
+@HiltViewModel
+class AddDreamViewModel @Inject constructor(): ViewModel() {
     var state by mutableStateOf(AddDreamState())
         private set
 

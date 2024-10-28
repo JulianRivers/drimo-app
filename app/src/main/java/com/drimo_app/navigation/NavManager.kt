@@ -1,6 +1,7 @@
 package com.drimo_app.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -14,19 +15,22 @@ import com.drimo_app.views.start.LoginView
 import com.drimo_app.views.start.RegisterView
 
 @Composable
-fun NavManager(loginViewModel: LoginViewModel, registerViewModel: RegisterViewModel, addDreamViewModel: AddDreamViewModel) {
+fun NavManager() {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = Routes.Login.route) {
         composable(route = Routes.Login.route) {
+            val loginViewModel: LoginViewModel = hiltViewModel()
             LoginView(navController, loginViewModel)
         }
-        
+
         composable(route = Routes.Register.route) {
+            val registerViewModel: RegisterViewModel = hiltViewModel()
             RegisterView(navController, registerViewModel)
         }
 
         composable(route = Routes.AddDream.route) {
+            val addDreamViewModel: AddDreamViewModel = hiltViewModel()
             AddDreamView(navController, addDreamViewModel)
         }
 

@@ -10,19 +10,17 @@ import com.drimo_app.ui.theme.DrimoAppTheme
 import com.drimo_app.viewmodels.dreams.AddDreamViewModel
 import com.drimo_app.viewmodels.inicio.LoginViewModel
 import com.drimo_app.viewmodels.inicio.RegisterViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val loginViewModel: LoginViewModel by viewModels()
-    private val registerViewModel: RegisterViewModel by viewModels()
-    private val addDreamViewModel: AddDreamViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             DrimoAppTheme () {
-                NavManager(loginViewModel,
-                           registerViewModel,
-                           addDreamViewModel,)
+                NavManager()
             }
         }
     }
