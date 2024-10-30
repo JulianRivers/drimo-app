@@ -3,6 +3,7 @@ package com.drimo_app.views.dreams
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -116,6 +117,9 @@ fun ContentEditDreamView(navController: NavController) {
                             .padding(horizontal = 6.dp)
                             .background(Color(0xFF1F265E), shape = RoundedCornerShape(12.dp))
                             .padding(horizontal = 5.dp )
+                            .clickable {
+                                tags.remove(tag)
+                            }
                     ) {
                         Text(
                             text = tag,
