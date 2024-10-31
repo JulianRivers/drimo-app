@@ -1,8 +1,10 @@
 package com.drimo_app.components
 
+
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
@@ -27,6 +29,7 @@ fun MainTextField(
     singleLine: Boolean = true,
     visualTransformation: VisualTransformation = VisualTransformation. None,
     height: Dp = 56.dp,
+    modifier: Modifier = Modifier.fillMaxWidth().padding(horizontal = 30.dp).height(height),
 ) {
     OutlinedTextField(
         value = value,
@@ -37,10 +40,7 @@ fun MainTextField(
         },
         label = { Text(text = label, style = MaterialTheme.typography.bodyLarge) },
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 30.dp)
-            .height(height),
+        modifier = modifier,
         shape = RoundedCornerShape(16.dp),
         colors = OutlinedTextFieldDefaults.colors(
             focusedTextColor = MaterialTheme.colorScheme.background,
