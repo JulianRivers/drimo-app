@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.drimo_app.model.app.Routes
 import com.drimo_app.model.start.LoginState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -22,7 +23,7 @@ class LoginViewModel @Inject constructor(): ViewModel() {
     }
 
     fun iniciarSesion(navController: NavController) {
-        navController.navigate("Register")
+        navController.navigate(Routes.Dreams.route)
     }
 }
 

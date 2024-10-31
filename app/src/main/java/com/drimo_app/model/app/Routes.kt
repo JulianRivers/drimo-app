@@ -6,5 +6,6 @@ sealed class Routes(val route:String) {
 
     object AddDream:Routes("AddDream")
     object EditDream:Routes("EditDream")
+    object Dreams : Routes("Dreams")
 
 }

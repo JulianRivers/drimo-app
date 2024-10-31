@@ -6,10 +6,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.drimo_app.model.app.Routes
+import com.drimo_app.model.dreams.Dream
 import com.drimo_app.viewmodels.dreams.AddDreamViewModel
 import com.drimo_app.viewmodels.inicio.LoginViewModel
 import com.drimo_app.viewmodels.inicio.RegisterViewModel
 import com.drimo_app.views.dreams.AddDreamView
+import com.drimo_app.views.dreams.DreamView
 import com.drimo_app.views.dreams.EditDreamView
 import com.drimo_app.views.start.LoginView
 import com.drimo_app.views.start.RegisterView
@@ -37,6 +39,15 @@ fun NavManager() {
         composable(route = Routes.EditDream.route) {
             EditDreamView(navController)
         }
+
+        composable(route = Routes.Dreams.route) {
+            val dreams = listOf(
+                Dream("Gibson se muere", "Íbamos a la casa de Gibson y Gibson se fue a pelear...", "Sáb", 28),
+                Dream("Gibson se muere", "Íbamos a la casa de Gibson y Gibson se fue a pelear...", "Dom", 29)
+            )
+            DreamView(navController = navController, dreams = dreams)
+        }
+
 
 
         //ejemplo de navegación con deep links
