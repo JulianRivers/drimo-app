@@ -7,12 +7,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.drimo_app.model.app.Routes
 import com.drimo_app.model.dreams.Dream
+import com.drimo_app.model.patterns.Factor
+import com.drimo_app.model.patterns.SleepPattern
 import com.drimo_app.viewmodels.dreams.AddDreamViewModel
 import com.drimo_app.viewmodels.inicio.LoginViewModel
 import com.drimo_app.viewmodels.inicio.RegisterViewModel
 import com.drimo_app.views.dreams.AddDreamView
 import com.drimo_app.views.dreams.DreamView
 import com.drimo_app.views.dreams.EditDreamView
+import com.drimo_app.views.patterns.PatternsView
 import com.drimo_app.views.start.LoginView
 import com.drimo_app.views.start.RegisterView
 
@@ -47,6 +50,21 @@ fun NavManager() {
             )
             DreamView(navController = navController, dreams = dreams)
         }
+
+        composable(route = Routes.Patterns.route) {
+            val sleepPattern = SleepPattern(
+                factors = listOf(
+                    Factor("Recurrente", 4),
+                    Factor("Lucidez", 3),
+                    Factor("Pesadilla", 1)
+                ),
+                tags = listOf("Viaje", "Peligro", "Cancion"),
+                completedCycles = 24,
+                plannedHours = 96
+            )
+            PatternsView(sleepPattern)
+        }
+
 
 
 
