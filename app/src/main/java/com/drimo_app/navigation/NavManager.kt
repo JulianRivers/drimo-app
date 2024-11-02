@@ -12,6 +12,7 @@ import com.drimo_app.model.patterns.SleepPattern
 import com.drimo_app.viewmodels.dreams.AddDreamViewModel
 import com.drimo_app.viewmodels.inicio.LoginViewModel
 import com.drimo_app.viewmodels.inicio.RegisterViewModel
+import com.drimo_app.views.cycles.CyclesView
 import com.drimo_app.views.dreams.AddDreamView
 import com.drimo_app.views.dreams.DreamView
 import com.drimo_app.views.dreams.EditDreamView
@@ -65,7 +66,9 @@ fun NavManager() {
             PatternsView(sleepPattern)
         }
 
-
+        composable(route = Routes.Cycles.route) {
+            CyclesView(navController = navController)
+        }
 
 
         //ejemplo de navegación con deep links

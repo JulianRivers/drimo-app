@@ -23,7 +23,7 @@ class LoginViewModel @Inject constructor(): ViewModel() {
     }
 
     fun iniciarSesion(navController: NavController) {
-        navController.navigate(Routes.Dreams.route)
+        navController.navigate(Routes.Cycles.route)
     }
 }
 
