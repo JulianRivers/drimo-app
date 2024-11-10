@@ -1,6 +1,6 @@
 package com.drimo_app.util
 
-import com.drimo_app.data.api.AuthApi
+import com.drimo_app.data.api.UserApi
 import com.drimo_app.util.Constants.Companion.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -25,8 +25,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun providesAuthApi(retrofit: Retrofit) : AuthApi {
-        return retrofit.create(AuthApi::class.java)
+    fun providesAuthApi(retrofit: Retrofit) : UserApi {
+        return retrofit.create(UserApi::class.java)
     }
 
 }

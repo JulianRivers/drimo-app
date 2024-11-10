@@ -14,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -24,6 +25,7 @@ import androidx.navigation.NavController
 import com.drimo_app.R
 import com.drimo_app.components.MainButton
 import com.drimo_app.components.MainTextField
+import com.drimo_app.components.MessageDialog
 import com.drimo_app.components.SpaceH
 import com.drimo_app.model.app.Routes
 import com.drimo_app.viewmodels.inicio.RegisterViewModel
@@ -38,6 +40,11 @@ fun RegisterView(navController: NavController, registerViewModel: RegisterViewMo
 @Composable
 fun ContentRegisterView(navController: NavController, registerViewModel: RegisterViewModel) {
     val state = registerViewModel.state
+
+    // Observa el estado del ViewModel para mostrar el mensaje de éxito o error
+    val showDialog = registerViewModel.showDialog
+    val isSuccess = registerViewModel.isSuccess
+    val message = registerViewModel.message
 
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
@@ -54,7 +61,7 @@ fun ContentRegisterView(navController: NavController, registerViewModel: Registe
             SpaceH(size = 100.dp)
             MainTextField(
                 value = state.email,
-                onValueChange = { registerViewModel.onValue(it, "correo") },
+                onValueChange = { registerViewModel.onValue(it, "email") },
                 label = "Correo electrónico",
                 keyboardType = KeyboardType.Email
             )
@@ -77,7 +84,7 @@ fun ContentRegisterView(navController: NavController, registerViewModel: Registe
             SpaceH(size = 15.dp)
             MainButton(
                 text = "Crear cuenta",
-                onClick = { registerViewModel.registerAccount() },
+                onClick = { registerViewModel.registerAccount(navController) },
                 modifierButton = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 30.dp),
@@ -92,5 +99,19 @@ fun ContentRegisterView(navController: NavController, registerViewModel: Registe
                 )
             }
         }
+    }
+    if (showDialog) {
+        MessageDialog(
+            showDialog = mutableStateOf(showDialog),
+            isSuccess = isSuccess,
+            message = message,
+            onDismiss = {
+                registerViewModel.showDialog = false
+                // Navegar a la pantalla de login después de cerrar el modal
+                if (isSuccess) {
+                    navController.navigate(Routes.Login.route)
+                }
+            }
+        )
     }
 }

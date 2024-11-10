@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.drimo_app.data.repository.AuthRepository
+import com.drimo_app.data.repository.UserRepository
 import com.drimo_app.model.app.Routes
 import com.drimo_app.model.start.LoginState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val repo: AuthRepository) : ViewModel() {
+class LoginViewModel @Inject constructor(private val repo: UserRepository) : ViewModel() {
     var state by mutableStateOf(LoginState())
         private set
 
