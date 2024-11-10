@@ -1,5 +1,6 @@
 package com.drimo_app.util
 
+import com.drimo_app.data.api.DreamApi
 import com.drimo_app.data.api.UserApi
 import com.drimo_app.util.Constants.Companion.BASE_URL
 import dagger.Module
@@ -27,6 +28,12 @@ object AppModule {
     @Provides
     fun providesAuthApi(retrofit: Retrofit) : UserApi {
         return retrofit.create(UserApi::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun providesDreamApi(retrofit: Retrofit) : DreamApi {
+        return retrofit.create(DreamApi::class.java)
     }
 
 }

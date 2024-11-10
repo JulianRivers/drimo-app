@@ -36,7 +36,9 @@ import androidx.navigation.NavController
 import com.drimo_app.R
 import com.drimo_app.components.MainButton
 import com.drimo_app.components.MainTextField
+import com.drimo_app.components.MessageDialog
 import com.drimo_app.components.SpaceH
+import com.drimo_app.model.app.Routes
 import com.drimo_app.viewmodels.dreams.AddDreamViewModel
 
 
@@ -51,6 +53,11 @@ fun AddDreamView(navController: NavController, addDreamViewModel: AddDreamViewMo
 @Composable
 fun ContentAddDreamView(navController: NavController, addDreamViewModel: AddDreamViewModel) {
     val state = addDreamViewModel.state
+
+    // Observa el estado del ViewModel para mostrar el mensaje de éxito o error
+    val showDialog = addDreamViewModel.showDialog
+    val isSuccess = addDreamViewModel.isSuccess
+    val message = addDreamViewModel.message
 
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
@@ -184,5 +191,17 @@ fun ContentAddDreamView(navController: NavController, addDreamViewModel: AddDrea
                     .padding(horizontal = 30.dp).height(50.dp)
             )
         }
+    }
+
+    if (showDialog) {
+        MessageDialog(
+            showDialog = mutableStateOf(showDialog),
+            isSuccess = isSuccess,
+            message = message,
+            onDismiss = {
+                addDreamViewModel.showDialog = false
+
+            }
+        )
     }
 }
