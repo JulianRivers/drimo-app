@@ -27,15 +27,20 @@ import androidx.navigation.compose.rememberNavController
 import com.drimo_app.model.app.BottomBarScreen
 import com.drimo_app.model.app.Routes
 import com.drimo_app.navigation.NavManager
+import com.drimo_app.ui.theme.DarkBlue
+import com.drimo_app.ui.theme.LightBlue
+import com.drimo_app.ui.theme.LightPurple
+import com.drimo_app.ui.theme.White
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
-    val currentRoute = navController.currentBackStackEntry?.destination?.route
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+    val shouldShowBottomBar = shouldShowBottomBar(currentRoute)
     Scaffold(
         bottomBar = {
-            if (shouldShowBottomBar(currentRoute)) {
+            if (shouldShowBottomBar) {
                 BottomBar(navController = navController)
             }
         }
@@ -57,11 +62,10 @@ fun BottomBar(navController: NavHostController) {
     val currentDestination = navBackStackEntry?.destination
 
     NavigationBar(
-        containerColor = Color(0xFF0E1B5A)
+        containerColor = LightBlue
     ) {
         screens.forEach { screen ->
             if (screen.route == Routes.AddDream.route) {
-                // Botón central especial
                 AddFloatingItem(
                     screen = screen,
                     navController = navController
@@ -89,14 +93,14 @@ fun RowScope.AddItem(
         label = {
             Text(
                 screen.title,
-                color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onPrimary
+                color = if (isSelected) LightPurple else White
             )
         },
         icon = {
             Icon(
                 imageVector = screen.icon,
                 contentDescription = "Navigation Icon",
-                tint = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onPrimary
+                tint = if (isSelected) LightPurple else White
             )
         },
         selected = currentDestination?.hierarchy?.any {
@@ -124,7 +128,7 @@ fun RowScope.AddFloatingItem(
     ) {
         FloatingActionButton(
             onClick = { navController.navigate(screen.route) },
-            containerColor = Color(0xFF8777FB),
+            containerColor = MaterialTheme.colorScheme.primary,
             shape = RoundedCornerShape(16.dp),
             elevation = FloatingActionButtonDefaults.elevation(8.dp)
         ) {

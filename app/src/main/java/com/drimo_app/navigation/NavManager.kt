@@ -5,7 +5,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.drimo_app.model.app.Routes
 import com.drimo_app.model.dreams.Dream
 import com.drimo_app.model.patterns.Factor

@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.drimo_app.navigation.NavManager
 import com.drimo_app.ui.theme.DrimoAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 

@@ -15,13 +15,13 @@ sealed class BottomBarScreen(
     val isButton: Boolean = false
 ) {
     object Home : BottomBarScreen(
-        route = Routes.Login.route,
+        route = Routes.Dreams.route,
         title = "Sueños",
         icon = Icons.Outlined.Home
     )
 
     object Cycles : BottomBarScreen(
-        route = Routes.Register.route,
+        route = Routes.Cycles.route,
         title = "Ciclos",
         icon = Icons.Outlined.DateRange
     )
@@ -33,13 +33,13 @@ sealed class BottomBarScreen(
     )
 
     object Patterns : BottomBarScreen(
-        route = Routes.EditDream.route,
+        route = Routes.Patterns.route,
         title = "Patrones",
         icon = Icons.Default.Menu
     )
 
     object Blog : BottomBarScreen(
-        route = "Blog",
+        route = Routes.EditDream.route,
         title = "Blog",
         icon = Icons.Default.MailOutline
     )
