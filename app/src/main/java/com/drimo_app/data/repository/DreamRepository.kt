@@ -1,6 +1,7 @@
 package com.drimo_app.data.repository
 
 import com.drimo_app.data.api.DreamApi
+import com.drimo_app.model.dreams.AddDreamRequest
 import com.drimo_app.util.Constants.Companion.apiKey
 import retrofit2.Response
 import java.text.SimpleDateFormat
@@ -15,19 +16,19 @@ class DreamRepository @Inject constructor(private val dreamApi: DreamApi) {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault())
         val formattedDate = dateFormat.format(Date())
 
-        val registerData = mapOf(
-            "title" to title,
-            "description" to description,
-            "tags" to tags,
-            "sleepFactors" to sleepFactors,
-            "dateDream" to formattedDate,
-            "user_id" to 1
+        val addDreamRequest = AddDreamRequest(
+            title = title,
+            description = description,
+            tags = tags,
+            sleepFactors = sleepFactors,
+            dateDream = formattedDate,
+            user_id = 1
         )
 
         return dreamApi.addDream(
             apikey = apiKey,
             authorization = "Bearer $apiKey",
-            addDreamRequest = registerData
+            addDreamRequest = addDreamRequest
         )
     }
 }

@@ -1,5 +1,6 @@
 package com.drimo_app.data.api
 
+import com.drimo_app.model.start.RegisterRequest
 import com.drimo_app.model.start.UserModel;
 
 import retrofit2.Response;
@@ -26,6 +27,6 @@ interface UserApi {
     suspend fun register(
         @Header("apikey") apikey: String,
         @Header("Authorization") authorization: String,
-        @Body registerRequest: Map<String, String>
+        @Body registerRequest: RegisterRequest
     ): Response<Void>
 }

@@ -1,6 +1,7 @@
 package com.drimo_app.data.repository
 
 import com.drimo_app.data.api.UserApi
+import com.drimo_app.model.start.RegisterRequest
 import com.drimo_app.model.start.UserModel
 import retrofit2.Response
 import javax.inject.Inject
@@ -18,9 +19,9 @@ class UserRepository @Inject constructor(private val userApi: UserApi) {
     }
 
     suspend fun register(email: String, password: String): Response<Void> {
-        val registerData = mapOf(
-            "email" to email,
-            "password" to password
+        val registerData = RegisterRequest(
+            email = email,
+            password = password
         )
 
         return userApi.register(

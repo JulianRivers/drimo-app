@@ -1,6 +1,7 @@
 package com.drimo_app.viewmodels.dreams
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -24,10 +25,26 @@ class AddDreamViewModel @Inject constructor(private val repo: DreamRepository): 
 
     fun onValue(value: Any, text: String) {
         when (text) {
-            "title" -> if (value is String) state = state.copy(title = value)
-            "description" -> if (value is String) state = state.copy(description = value)
-            "tags" -> if (value is List<*>) state = state.copy(tags = value.filterIsInstance<String>())
-            "sleepFactors" -> if (value is List<*>) state = state.copy(sleepFactors = value.filterIsInstance<String>())
+            "title" -> {
+                if (value is String) {
+                    state = state.copy(title = value.replaceFirstChar { it.uppercaseChar() })
+                }
+            }
+            "description" -> {
+                if (value is String) {
+                    state = state.copy(description = value.replaceFirstChar { it.uppercaseChar() })
+                }
+            }
+            "tags" -> {
+                if (value is List<*>) {
+                    state = state.copy(tags = value.filterIsInstance<String>())
+                }
+            }
+            "sleepFactors" -> {
+                if (value is List<*>) {
+                    state = state.copy(sleepFactors = value.filterIsInstance<String>())
+                }
+            }
         }
     }
 
@@ -76,11 +93,22 @@ class AddDreamViewModel @Inject constructor(private val repo: DreamRepository): 
                 message = "¡sueño registrado exitosamente!"
                 isSuccess = true
                 showDialog = true
+
+                clearFields()
             } else {
                 message = "Error al registrar sueño"
                 isSuccess = false
                 showDialog = true
             }
         }
+    }
+
+    private fun clearFields() {
+        state = state.copy(
+            title = "",
+            description = "",
+            tags = emptyList(),
+            sleepFactors = emptyList(),
+        )
     }
 }

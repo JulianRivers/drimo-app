@@ -14,7 +14,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -59,6 +61,8 @@ fun ContentAddDreamView(navController: NavController, addDreamViewModel: AddDrea
     val isSuccess = addDreamViewModel.isSuccess
     val message = addDreamViewModel.message
 
+    val sleepFactors = remember { mutableStateListOf(false, false, false) }
+
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.background_2),
@@ -66,7 +70,7 @@ fun ContentAddDreamView(navController: NavController, addDreamViewModel: AddDrea
             modifier = Modifier.fillMaxSize()
         )
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -91,7 +95,7 @@ fun ContentAddDreamView(navController: NavController, addDreamViewModel: AddDrea
             SpaceH(size = 15.dp)
             // Tags Section
             val tagInput = remember { mutableStateOf("") }
-            val tags = remember { mutableStateListOf<String>() }
+            val tags = state.tags
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -109,8 +113,8 @@ fun ContentAddDreamView(navController: NavController, addDreamViewModel: AddDrea
                     text = "+",
                     onClick = {
                         if (tagInput.value.isNotBlank() && tags.size < 3) {
-                            tags.add(tagInput.value)
-                            addDreamViewModel.onValue(tags.toList(), "tags")
+                            val updatedTags = tags + tagInput.value.replaceFirstChar { it.uppercaseChar() }
+                            addDreamViewModel.onValue(updatedTags, "tags")
                             tagInput.value = ""
                         }
                     },
@@ -134,8 +138,8 @@ fun ContentAddDreamView(navController: NavController, addDreamViewModel: AddDrea
                             .background(Color(0xFF1F265E), shape = RoundedCornerShape(12.dp))
                             .padding(horizontal = 5.dp )
                             .clickable {
-                                tags.remove(tag)
-                                addDreamViewModel.onValue(tags.toList(), "tags")
+                                val updatedTags = tags - tag
+                                addDreamViewModel.onValue(updatedTags, "tags")
                             }
                     ) {
                         Text(
@@ -152,16 +156,16 @@ fun ContentAddDreamView(navController: NavController, addDreamViewModel: AddDrea
                 }
             }
 
-            SpaceH(size = 40.dp)
-
+            SpaceH(size = 15.dp)
 
             // Sleep Factors Section
             Text(text = "Cuéntame más de tu sueño", style = MaterialTheme.typography.headlineSmall)
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                val sleepFactors = remember { mutableStateListOf(false, false, false) }
+
                 val factorLabels = listOf("Lúcido", "Pesadilla", "Sueño recurrente")
 
                 factorLabels.forEachIndexed { index, label ->
@@ -185,7 +189,10 @@ fun ContentAddDreamView(navController: NavController, addDreamViewModel: AddDrea
             SpaceH(size = 15.dp)
             MainButton(
                 text = "Guardar sueño",
-                onClick = { addDreamViewModel.addDream() },
+                onClick = {
+                    addDreamViewModel.addDream()
+
+                },
                 modifierButton = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 30.dp).height(50.dp)
@@ -200,8 +207,11 @@ fun ContentAddDreamView(navController: NavController, addDreamViewModel: AddDrea
             message = message,
             onDismiss = {
                 addDreamViewModel.showDialog = false
-
             }
         )
+        if (isSuccess) {
+            sleepFactors.clear()
+            sleepFactors.addAll(listOf(false, false, false))
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.drimo_app.data.api
 
+import com.drimo_app.model.dreams.AddDreamRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Header
@@ -13,6 +14,6 @@ interface DreamApi {
     suspend fun addDream(
         @Header("apikey") apikey: String,
         @Header("Authorization") authorization: String,
-        @Body addDreamRequest: Map<String, Any>
+        @Body addDreamRequest: AddDreamRequest
     ): Response<Void>
 }
