@@ -2,6 +2,8 @@ package com.drimo_app.views.dreams
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,7 +12,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -23,8 +27,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.drimo_app.R
 import com.drimo_app.components.MainButton
@@ -81,7 +88,7 @@ fun ContentAddDreamView(navController: NavController, addDreamViewModel: AddDrea
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly,
+                horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 MainTextField(
@@ -89,6 +96,7 @@ fun ContentAddDreamView(navController: NavController, addDreamViewModel: AddDrea
                     onValueChange = { tagInput.value = it },
                     label = "Etiquetas maximo 3",
                     keyboardType = KeyboardType.Text,
+                    modifier = Modifier.padding(horizontal = 30.dp).height(56.dp).width(250.dp)
                 )
                 MainButton(
                     text = "+",
@@ -96,27 +104,48 @@ fun ContentAddDreamView(navController: NavController, addDreamViewModel: AddDrea
                         if (tagInput.value.isNotBlank() && tags.size < 3) {
                             tags.add(tagInput.value)
                             addDreamViewModel.onValue(tags.toList(), "tags")
-                            tagInput.value = "" // Limpiar el campo después de agregar
+                            tagInput.value = ""
                         }
                     },
-                    modifierButton = Modifier.height(50.dp)
+                    modifierButton = Modifier.height(50.dp).width(50.dp),
                 )
             }
+            SpaceH(size = 10.dp)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 30.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 tags.forEach { tag ->
-                    Text(
-                        text = tag,
-                        color = Color.White,
-                        modifier = Modifier.wrapContentSize()
-                    )
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .width(110.dp)
+                            .height(45.dp)
+                            .padding(horizontal = 6.dp)
+                            .background(Color(0xFF1F265E), shape = RoundedCornerShape(12.dp))
+                            .padding(horizontal = 5.dp )
+                            .clickable {
+                                tags.remove(tag)
+                                addDreamViewModel.onValue(tags.toList(), "tags")
+                            }
+                    ) {
+                        Text(
+                            text = tag,
+                            color = Color.White,
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Medium,
+                                textAlign = TextAlign.Center
+                            ),
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
                 }
             }
-            SpaceH(size = 30.dp)
+
+            SpaceH(size = 40.dp)
 
 
             // Sleep Factors Section

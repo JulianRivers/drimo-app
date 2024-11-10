@@ -2,21 +2,26 @@ package com.drimo_app.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.drimo_app.model.app.Routes
+import com.drimo_app.model.dreams.Dream
+import com.drimo_app.model.patterns.Factor
+import com.drimo_app.model.patterns.SleepPattern
 import com.drimo_app.viewmodels.dreams.AddDreamViewModel
 import com.drimo_app.viewmodels.inicio.LoginViewModel
 import com.drimo_app.viewmodels.inicio.RegisterViewModel
+import com.drimo_app.views.cycles.CyclesView
 import com.drimo_app.views.dreams.AddDreamView
+import com.drimo_app.views.dreams.DreamView
 import com.drimo_app.views.dreams.EditDreamView
+import com.drimo_app.views.patterns.PatternsView
 import com.drimo_app.views.start.LoginView
 import com.drimo_app.views.start.RegisterView
 
 @Composable
-fun NavManager() {
-    val navController = rememberNavController()
+fun NavManager(navController: NavHostController) {
 
     NavHost(navController = navController, startDestination = Routes.Login.route) {
         composable(route = Routes.Login.route) {
@@ -36,6 +41,32 @@ fun NavManager() {
 
         composable(route = Routes.EditDream.route) {
             EditDreamView(navController)
+        }
+
+        composable(route = Routes.Dreams.route) {
+            val dreams = listOf(
+                Dream("Gibson se muere", "Íbamos a la casa de Gibson y Gibson se fue a pelear...", "Sáb", 28),
+                Dream("Gibson se muere", "Íbamos a la casa de Gibson y Gibson se fue a pelear...", "Dom", 29)
+            )
+            DreamView(navController = navController, dreams = dreams)
+        }
+
+        composable(route = Routes.Patterns.route) {
+            val sleepPattern = SleepPattern(
+                factors = listOf(
+                    Factor("Recurrente", 4),
+                    Factor("Lucidez", 3),
+                    Factor("Pesadilla", 1)
+                ),
+                tags = listOf("Viaje", "Peligro", "Cancion"),
+                completedCycles = 24,
+                plannedHours = 96
+            )
+            PatternsView(sleepPattern)
+        }
+
+        composable(route = Routes.Cycles.route) {
+            CyclesView(navController = navController)
         }
 
 
