@@ -74,7 +74,8 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:$nav_version")
     implementation("com.google.dagger:hilt-android:2.44")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
-
+    implementation ("com.squareup.retrofit2:converter-gson:2.11.0")
+    //implementation ("io.coil-kt:coil-compose:1.4.0") // dependencia para cargar imagenes con caché que no sé si vayamos a usar
     kapt("com.google.dagger:hilt-android-compiler:2.44")
 }
 
