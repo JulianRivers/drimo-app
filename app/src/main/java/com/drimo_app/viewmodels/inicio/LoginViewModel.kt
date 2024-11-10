@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val repo: AuthRepository): ViewModel() {
+class LoginViewModel @Inject constructor(private val repo: AuthRepository) : ViewModel() {
     var state by mutableStateOf(LoginState())
         private set
 
@@ -27,7 +27,9 @@ class LoginViewModel @Inject constructor(private val repo: AuthRepository): View
 
     fun iniciarSesion(navController: NavController) {
         viewModelScope.launch {
-            val response = repo.login(state.correo, state.password)
+            val email = "eq.${state.correo}"
+            val password = "eq.${state.password}"
+            val response = repo.login(email, password)
 
             if (response.isSuccessful && response.body()?.isNotEmpty() == true) {
                 val user = response.body()?.firstOrNull()
