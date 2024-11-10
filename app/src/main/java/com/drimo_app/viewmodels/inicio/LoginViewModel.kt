@@ -4,14 +4,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.drimo_app.data.repository.AuthRepository
 import com.drimo_app.model.app.Routes
 import com.drimo_app.model.start.LoginState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(): ViewModel() {
+class LoginViewModel @Inject constructor(private val repo: AuthRepository): ViewModel() {
     var state by mutableStateOf(LoginState())
         private set
 
@@ -23,7 +26,16 @@ class LoginViewModel @Inject constructor(): ViewModel() {
     }
 
     fun iniciarSesion(navController: NavController) {
-        navController.navigate(Routes.Dreams.route)
+        viewModelScope.launch {
+            val response = repo.login(state.correo, state.password)
+
+            if (response.isSuccessful && response.body()?.isNotEmpty() == true) {
+                val user = response.body()?.firstOrNull()
+                navController.navigate(Routes.Dreams.route)
+            } else {
+                print("F")
+            }
+        }
     }
 }
 
