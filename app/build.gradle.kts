@@ -1,4 +1,3 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -85,13 +84,14 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    val nav_version = "2.8.0"
+    val nav_version = "2.8.3"
     implementation("androidx.navigation:navigation-compose:$nav_version")
-    implementation("com.google.dagger:hilt-android:2.44")
+    implementation("com.google.dagger:hilt-android:2.48")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
-    //implementation ("io.coil-kt:coil-compose:1.4.0") // dependencia para cargar imagenes con caché que no sé si vayamos a usar
-    kapt("com.google.dagger:hilt-android-compiler:2.44")
+    implementation ("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation ("org.jetbrains.kotlin:kotlin-stdlib:1.8.0")
+    kapt("com.google.dagger:hilt-android-compiler:2.48")
+
 }
 
 kapt {
