@@ -1,3 +1,7 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -8,6 +12,7 @@ plugins {
 android {
     namespace = "com.drimo_app"
     compileSdk = 34
+
 
     defaultConfig {
         applicationId = "com.drimo_app"
@@ -23,12 +28,21 @@ android {
     }
 
     buildTypes {
+        val prop = Properties().apply {
+            load(FileInputStream(File(rootProject.rootDir, "local.properties")))
+        }
+        debug {
+            buildConfigField("String", "API_KEY", prop.getProperty("API_KEY"))
+            buildConfigField("String", "BASE_URL", prop.getProperty("BASE_URL"))
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "API_KEY", prop.getProperty("API_KEY"))
+            buildConfigField("String", "BASE_URL", prop.getProperty("BASE_URL"))
         }
     }
     compileOptions {
@@ -39,6 +53,7 @@ android {
         jvmTarget = "1.8"
     }
     buildFeatures {
+        buildConfig = true
         compose = true
     }
     composeOptions {
@@ -74,7 +89,7 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:$nav_version")
     implementation("com.google.dagger:hilt-android:2.44")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
     //implementation ("io.coil-kt:coil-compose:1.4.0") // dependencia para cargar imagenes con caché que no sé si vayamos a usar
     kapt("com.google.dagger:hilt-android-compiler:2.44")
 }
