@@ -44,11 +44,7 @@ fun NavManager(navController: NavHostController) {
         }
 
         composable(route = Routes.Dreams.route) {
-            val dreams = listOf(
-                Dream("Gibson se muere", "Íbamos a la casa de Gibson y Gibson se fue a pelear...", "Sáb", 28),
-                Dream("Gibson se muere", "Íbamos a la casa de Gibson y Gibson se fue a pelear...", "Dom", 29)
-            )
-            DreamView(navController = navController, dreams = dreams)
+            DreamView(navController = navController)
         }
 
         composable(route = Routes.Patterns.route) {

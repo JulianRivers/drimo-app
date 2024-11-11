@@ -2,6 +2,8 @@ package com.drimo_app.data.repository
 
 import com.drimo_app.data.api.DreamApi
 import com.drimo_app.model.dreams.AddDreamRequest
+import com.drimo_app.model.dreams.Dream
+import com.drimo_app.model.start.UserModel
 import com.drimo_app.util.Constants.Companion.apiKey
 import retrofit2.Response
 import java.text.SimpleDateFormat
@@ -29,6 +31,14 @@ class DreamRepository @Inject constructor(private val dreamApi: DreamApi) {
             apikey = apiKey,
             authorization = "Bearer $apiKey",
             addDreamRequest = addDreamRequest
+        )
+    }
+
+    suspend fun getDreams(): Response<List<Dream>> {
+        return dreamApi.getDreams(
+            apikey = apiKey,
+            authorization = "Bearer $apiKey",
+            user_id = "eq.1",
         )
     }
 }
