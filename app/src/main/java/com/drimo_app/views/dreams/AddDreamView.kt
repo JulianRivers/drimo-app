@@ -52,6 +52,7 @@ fun AddDreamView(navController: NavController, addDreamViewModel: AddDreamViewMo
     }
 }
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun ContentAddDreamView(navController: NavController, addDreamViewModel: AddDreamViewModel) {
     val state = addDreamViewModel.state

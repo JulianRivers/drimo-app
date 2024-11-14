@@ -37,6 +37,7 @@ fun RegisterView(navController: NavController, registerViewModel: RegisterViewMo
         ContentRegisterView(navController, registerViewModel)
     }
 }
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun ContentRegisterView(navController: NavController, registerViewModel: RegisterViewModel) {
     val state = registerViewModel.state

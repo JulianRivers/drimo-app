@@ -1,6 +1,8 @@
 package com.drimo_app
 
 import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.size
@@ -32,6 +34,7 @@ import com.drimo_app.ui.theme.LightBlue
 import com.drimo_app.ui.theme.LightPurple
 import com.drimo_app.ui.theme.White
 
+@RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen() {
