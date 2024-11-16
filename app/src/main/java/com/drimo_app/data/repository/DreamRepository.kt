@@ -67,4 +67,13 @@ class DreamRepository @Inject constructor(private val dreamApi: DreamApi) {
             id = "eq.$id"
         )
     }
+
+    suspend fun getDreamStatistics(): Response<List<Dream>> {
+        return dreamApi.getDreams(
+            apikey = apiKey,
+            authorization = "Bearer $apiKey",
+            user_id = "eq.1",
+            select = "sleepFactors,tags"
+        )
+    }
 }
