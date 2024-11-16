@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -22,8 +23,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.drimo_app.R
+import com.drimo_app.model.app.Routes
 import com.drimo_app.model.dreams.Dream
 import com.drimo_app.viewmodels.dreams.DreamViewModel
+import com.google.gson.Gson
 import formatDreamDate
 import groupDreamsByMonth
 
@@ -35,12 +38,14 @@ fun DreamView(navController: NavController, dreamViewModel: DreamViewModel = hil
     val dreams = dreamViewModel.dreams.collectAsState(initial = emptyList())
     val groupedDreams = groupDreamsByMonth(dreams.value)
 
-    ContentDreamView(groupedDreams = groupedDreams)
+    ContentDreamView(groupedDreams = groupedDreams) { dream ->
+        navController.navigate(Routes.EditDream.createRoute(dream.id))
+    }
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun ContentDreamView(groupedDreams: Map<String, List<Dream>>) {
+fun ContentDreamView(groupedDreams: Map<String, List<Dream>>, onDreamClick: (Dream) -> Unit) {
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.background_2),
@@ -78,7 +83,7 @@ fun ContentDreamView(groupedDreams: Map<String, List<Dream>>) {
                         )
                     }
                     items(dreams) { dream ->
-                        DreamCard(dream = dream)
+                        DreamCard(dream = dream, onClick = { onDreamClick(dream) })
                         Spacer(modifier = Modifier.height(12.dp))
                     }
                 }
@@ -89,10 +94,10 @@ fun ContentDreamView(groupedDreams: Map<String, List<Dream>>) {
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun DreamCard(dream: Dream) {
+fun DreamCard(dream: Dream, onClick: () -> Unit) {
     Card(
         shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp),
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().clickable(onClick = onClick),
         colors = androidx.compose.material3.CardDefaults.cardColors(
             containerColor = Color(0xFF2A2A5E)
         )

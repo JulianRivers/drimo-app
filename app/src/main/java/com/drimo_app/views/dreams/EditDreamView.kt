@@ -20,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,18 +37,34 @@ import androidx.navigation.NavController
 import com.drimo_app.R
 import com.drimo_app.components.MainButton
 import com.drimo_app.components.MainTextField
+import com.drimo_app.components.MessageDialog
 import com.drimo_app.components.SpaceH
+import com.drimo_app.model.dreams.UpdateDreamState
+import com.drimo_app.viewmodels.dreams.UpdateDreamViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun EditDreamView(navController: NavController) {
+fun EditDreamView(navController: NavController, dreamId: Int, updateDreamViewModel: UpdateDreamViewModel) {
+
+    LaunchedEffect(dreamId) {
+        updateDreamViewModel.loadDream(dreamId)
+    }
+
     Scaffold() {
-        ContentEditDreamView(navController)
+        ContentEditDreamView(navController, updateDreamViewModel)
     }
 }
 
 @Composable
-fun ContentEditDreamView(navController: NavController) {
+fun ContentEditDreamView(navController: NavController, updateDreamViewModel: UpdateDreamViewModel) {
+    val state = updateDreamViewModel.state
+    val tagInput = remember { mutableStateOf("") }
+
+    // Observa el estado del ViewModel para mostrar el mensaje de éxito o error
+    val showDialog = updateDreamViewModel.showDialog
+    val isSuccess = updateDreamViewModel.isSuccess
+    val message = updateDreamViewModel.message
+
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.background_2),
@@ -63,25 +80,23 @@ fun ContentEditDreamView(navController: NavController) {
             Text(text = "Edita tu sueño", style = MaterialTheme.typography.headlineMedium)
             SpaceH(size = 50.dp)
             MainTextField(
-                value = "Me cai de un avión",
-                onValueChange = {  },
+                value = state.title,
+                onValueChange = { updateDreamViewModel.onValue(it, "title") },
                 label = "Titulo",
                 keyboardType = KeyboardType.Text
             )
             SpaceH(size = 15.dp)
             MainTextField(
-                value = "Estaba en un avión camino a la casa de julian cuando la cola del avión explota y me caigo",
-                onValueChange = { },
+                value = state.description,
+                onValueChange = { updateDreamViewModel.onValue(it, "description") },
                 label = "Descripción",
                 keyboardType = KeyboardType.Text,
                 height = 160.dp,
                 singleLine = false
             )
             SpaceH(size = 15.dp)
+
             // Tags Section
-            // Tags Section
-            val tagInput = remember { mutableStateOf("") }
-            val tags = remember { mutableStateListOf<String>("Pesadilla") }
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -97,7 +112,13 @@ fun ContentEditDreamView(navController: NavController) {
                 )
                 MainButton(
                     text = "+",
-                    onClick = { },
+                    onClick = {
+                        if (tagInput.value.isNotBlank() && state.tags.size < 3) {
+                            val updatedTags = state.tags + tagInput.value.replaceFirstChar { it.uppercaseChar() }
+                            updateDreamViewModel.onValue(updatedTags, "tags")
+                            tagInput.value = ""
+                        }
+                    },
                     modifierButton = Modifier.height(50.dp).width(50.dp),
                 )
             }
@@ -108,7 +129,7 @@ fun ContentEditDreamView(navController: NavController) {
                     .padding(horizontal = 30.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                tags.forEach { tag ->
+                state.tags.forEach { tag ->
                     Box(
                         contentAlignment = Alignment.Center,
                         modifier = Modifier
@@ -118,7 +139,8 @@ fun ContentEditDreamView(navController: NavController) {
                             .background(Color(0xFF1F265E), shape = RoundedCornerShape(12.dp))
                             .padding(horizontal = 5.dp )
                             .clickable {
-                                tags.remove(tag)
+                                val updatedTags = state.tags - tag
+                                updateDreamViewModel.onValue(updatedTags, "tags")
                             }
                     ) {
                         Text(
@@ -135,7 +157,7 @@ fun ContentEditDreamView(navController: NavController) {
                 }
             }
 
-            SpaceH(size = 40.dp)
+            SpaceH(size = 15.dp)
 
 
             // Sleep Factors Section
@@ -144,16 +166,22 @@ fun ContentEditDreamView(navController: NavController) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                val sleepFactors = remember { mutableStateListOf(true, false, false) }
-                val factorLabels = listOf("Lúcido", "Pesadilla", "Sueño recurrente")
 
-                factorLabels.forEachIndexed { index, label ->
+                val factorLabels = listOf("Lúcido", "Pesadilla", "Sueño recurrente")
+                factorLabels.forEach { factor ->
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Checkbox(
-                            checked = sleepFactors[index],
-                            onCheckedChange = { }
+                            checked = state.sleepFactors.contains(factor),
+                            onCheckedChange = { isChecked ->
+                                val updatedFactors = if (isChecked) {
+                                    state.sleepFactors + factor
+                                } else {
+                                    state.sleepFactors - factor
+                                }
+                                updateDreamViewModel.onValue(updatedFactors, "sleepFactors")
+                            }
                         )
-                        Text(text = label)
+                        Text(text = factor)
                     }
                 }
             }
@@ -164,7 +192,9 @@ fun ContentEditDreamView(navController: NavController) {
             ) {
                 MainButton(
                     text = "Editar sueño",
-                    onClick = { },
+                    onClick = {
+                        updateDreamViewModel.updateDream()
+                    },
                     modifierButton = Modifier
                         .weight(0.9f)
                         .padding(horizontal = 12.dp)
@@ -172,7 +202,9 @@ fun ContentEditDreamView(navController: NavController) {
                 )
                 MainButton(
                     text = "Eliminar sueño",
-                    onClick = { },
+                    onClick = {
+                        updateDreamViewModel.deleteDream()
+                    },
                     modifierButton = Modifier
                         .weight(0.9f)
                         .padding(horizontal = 12.dp)
@@ -180,5 +212,19 @@ fun ContentEditDreamView(navController: NavController) {
                 )
             }
         }
+    }
+
+    if (showDialog) {
+        MessageDialog(
+            showDialog = mutableStateOf(showDialog),
+            isSuccess = isSuccess,
+            message = message,
+            onDismiss = {
+                updateDreamViewModel.showDialog = false
+                if (isSuccess && message == "Sueño eliminado exitosamente") {
+                    navController.popBackStack()
+                }
+            }
+        )
     }
 }

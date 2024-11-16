@@ -3,6 +3,7 @@ package com.drimo_app.data.repository
 import com.drimo_app.data.api.DreamApi
 import com.drimo_app.model.dreams.AddDreamRequest
 import com.drimo_app.model.dreams.Dream
+import com.drimo_app.model.dreams.UpdateDreamRequest
 import com.drimo_app.model.start.UserModel
 import com.drimo_app.util.Constants.Companion.apiKey
 import retrofit2.Response
@@ -39,6 +40,31 @@ class DreamRepository @Inject constructor(private val dreamApi: DreamApi) {
             apikey = apiKey,
             authorization = "Bearer $apiKey",
             user_id = "eq.1",
+        )
+    }
+
+    suspend fun getDreamById(id: Int): Response<List<Dream>> {
+        return dreamApi.getDreamById(
+            apikey = apiKey,
+            authorization = "Bearer $apiKey",
+            id = "eq.$id"
+        )
+    }
+
+    suspend fun updateDream(id: Int, updateDreamRequest: UpdateDreamRequest): Response<Void> {
+        return dreamApi.updateDream(
+            apikey = apiKey,
+            authorization = "Bearer $apiKey",
+            id = "eq.$id",
+            updateDreamRequest = updateDreamRequest
+        )
+    }
+
+    suspend fun deleteById(id: Int): Response<Void> {
+        return dreamApi.deleteDreamById(
+            apikey = apiKey,
+            authorization = "Bearer $apiKey",
+            id = "eq.$id"
         )
     }
 }

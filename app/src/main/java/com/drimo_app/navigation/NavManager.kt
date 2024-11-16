@@ -5,13 +5,17 @@ import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.drimo_app.model.app.Routes
 import com.drimo_app.model.dreams.Dream
+import com.drimo_app.model.dreams.UpdateDreamState
 import com.drimo_app.model.patterns.Factor
 import com.drimo_app.model.patterns.SleepPattern
 import com.drimo_app.viewmodels.dreams.AddDreamViewModel
+import com.drimo_app.viewmodels.dreams.UpdateDreamViewModel
 import com.drimo_app.viewmodels.inicio.LoginViewModel
 import com.drimo_app.viewmodels.inicio.RegisterViewModel
 import com.drimo_app.views.cycles.CyclesView
@@ -21,6 +25,7 @@ import com.drimo_app.views.dreams.EditDreamView
 import com.drimo_app.views.patterns.PatternsView
 import com.drimo_app.views.start.LoginView
 import com.drimo_app.views.start.RegisterView
+import com.google.gson.Gson
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -42,8 +47,17 @@ fun NavManager(navController: NavHostController) {
             AddDreamView(navController, addDreamViewModel)
         }
 
-        composable(route = Routes.EditDream.route) {
-            EditDreamView(navController)
+        composable(
+            route = Routes.EditDream.route,
+            arguments = listOf(
+                navArgument("id") { type = NavType.IntType }
+            )
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getInt("id") ?: 0
+
+            val updateDreamViewModel: UpdateDreamViewModel = hiltViewModel()
+
+            EditDreamView(navController = navController, dreamId = id, updateDreamViewModel = updateDreamViewModel)
         }
 
         composable(route = Routes.Dreams.route) {

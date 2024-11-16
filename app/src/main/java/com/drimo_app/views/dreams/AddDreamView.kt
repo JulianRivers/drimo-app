@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -40,7 +39,6 @@ import com.drimo_app.components.MainButton
 import com.drimo_app.components.MainTextField
 import com.drimo_app.components.MessageDialog
 import com.drimo_app.components.SpaceH
-import com.drimo_app.model.app.Routes
 import com.drimo_app.viewmodels.dreams.AddDreamViewModel
 
 
