@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 class DreamRepository @Inject constructor(private val dreamApi: DreamApi) {
 
-    suspend fun addDream(title: String, description: String, tags: List<String>, sleepFactors: List<String>): Response<Void> {
+    suspend fun addDream(user_id: Int, title: String, description: String, tags: List<String>, sleepFactors: List<String>): Response<Void> {
         // Formatear la fecha a un formato estándar
         val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault())
         val formattedDate = dateFormat.format(Date())
@@ -25,7 +25,7 @@ class DreamRepository @Inject constructor(private val dreamApi: DreamApi) {
             tags = tags,
             sleepFactors = sleepFactors,
             dateDream = formattedDate,
-            user_id = 1
+            user_id = user_id
         )
 
         return dreamApi.addDream(
@@ -35,11 +35,11 @@ class DreamRepository @Inject constructor(private val dreamApi: DreamApi) {
         )
     }
 
-    suspend fun getDreams(): Response<List<Dream>> {
+    suspend fun getDreams(user_id: Int): Response<List<Dream>> {
         return dreamApi.getDreams(
             apikey = apiKey,
             authorization = "Bearer $apiKey",
-            user_id = "eq.1",
+            user_id = "eq.$user_id",
         )
     }
 
@@ -68,11 +68,11 @@ class DreamRepository @Inject constructor(private val dreamApi: DreamApi) {
         )
     }
 
-    suspend fun getDreamStatistics(): Response<List<Dream>> {
+    suspend fun getDreamStatistics(user_id: Int): Response<List<Dream>> {
         return dreamApi.getDreams(
             apikey = apiKey,
             authorization = "Bearer $apiKey",
-            user_id = "eq.1",
+            user_id = "eq.$user_id",
             select = "sleepFactors,tags"
         )
     }

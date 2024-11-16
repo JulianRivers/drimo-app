@@ -1,24 +1,28 @@
 package com.drimo_app.viewmodels.patterns
 
+import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.drimo_app.data.repository.DreamRepository
 import com.drimo_app.model.patterns.Factor
 import com.drimo_app.model.patterns.SleepPattern
+import com.drimo_app.util.getInfoUser
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PatternsViewModel @Inject constructor(private val repo: DreamRepository): ViewModel() {
+class PatternsViewModel @Inject constructor(private val repo: DreamRepository, @ApplicationContext private val context: Context): ViewModel() {
     var sleepPattern = mutableStateOf(SleepPattern(emptyList(), emptyList(), 0, 0))
         private set
 
     fun loadStatistics() {
         viewModelScope.launch {
             try {
-                val response = repo.getDreamStatistics()
+                val userId = getInfoUser(context) ?: -1
+                val response = repo.getDreamStatistics(userId)
                 if (response.isSuccessful) {
                     val dreams = response.body() ?: emptyList()
 

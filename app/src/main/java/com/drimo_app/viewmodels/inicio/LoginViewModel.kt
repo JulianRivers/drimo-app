@@ -1,5 +1,6 @@
 package com.drimo_app.viewmodels.inicio
 
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -9,12 +10,14 @@ import androidx.navigation.NavController
 import com.drimo_app.data.repository.UserRepository
 import com.drimo_app.model.app.Routes
 import com.drimo_app.model.start.LoginState
+import com.drimo_app.util.saveInfoUser
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val repo: UserRepository) : ViewModel() {
+class LoginViewModel @Inject constructor(private val repo: UserRepository, @ApplicationContext private val context: Context) : ViewModel() {
     var state by mutableStateOf(LoginState())
         private set
 
@@ -33,7 +36,10 @@ class LoginViewModel @Inject constructor(private val repo: UserRepository) : Vie
 
             if (response.isSuccessful && response.body()?.isNotEmpty() == true) {
                 val user = response.body()?.firstOrNull()
-                navController.navigate(Routes.Dreams.route)
+                user?.let {
+                    saveInfoUser(context, it.id)
+                    navController.navigate(Routes.Dreams.route)
+                }
             } else {
                 print("F")
             }
