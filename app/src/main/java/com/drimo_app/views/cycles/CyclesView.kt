@@ -18,20 +18,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.drimo_app.R
+import com.drimo_app.viewmodels.cycles.CyclesViewModel
 import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
 import java.util.*
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun CyclesView(navController: NavController) {
+fun CyclesView(navController: NavController, cyclesViewModel: CyclesViewModel) {
     Scaffold {
-        ContentCyclesView()
+        ContentCyclesView(navController, cyclesViewModel)
     }
 }
 
 @Composable
-fun ContentCyclesView() {
+fun ContentCyclesView(navController: NavController, cyclesViewModel: CyclesViewModel) {
     var currentTime by remember { mutableStateOf(Calendar.getInstance(TimeZone.getTimeZone("America/Bogota")).time) }
 
     // Actualiza la hora cada segundo
@@ -93,7 +94,7 @@ fun ContentCyclesView() {
             InfoCard(
                 title = "Dormir ahora",
                 description = "Calcula los ciclos de sueño necesarios al acostarse en este momento",
-                onClick = { /* No hay navegación en este momento */ }
+                onClick = {  }
             )
 
             Spacer(modifier = Modifier.height(12.dp))

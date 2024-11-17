@@ -14,6 +14,7 @@ import com.drimo_app.model.dreams.Dream
 import com.drimo_app.model.dreams.UpdateDreamState
 import com.drimo_app.model.patterns.Factor
 import com.drimo_app.model.patterns.SleepPattern
+import com.drimo_app.viewmodels.cycles.CyclesViewModel
 import com.drimo_app.viewmodels.dreams.AddDreamViewModel
 import com.drimo_app.viewmodels.dreams.UpdateDreamViewModel
 import com.drimo_app.viewmodels.inicio.LoginViewModel
@@ -58,7 +59,11 @@ fun NavManager(navController: NavHostController) {
 
             val updateDreamViewModel: UpdateDreamViewModel = hiltViewModel()
 
-            EditDreamView(navController = navController, dreamId = id, updateDreamViewModel = updateDreamViewModel)
+            EditDreamView(
+                navController = navController,
+                dreamId = id,
+                updateDreamViewModel = updateDreamViewModel
+            )
         }
 
         composable(route = Routes.Dreams.route) {
@@ -71,7 +76,8 @@ fun NavManager(navController: NavHostController) {
         }
 
         composable(route = Routes.Cycles.route) {
-            CyclesView(navController = navController)
+            val cyclesViewModel: CyclesViewModel = hiltViewModel()
+            CyclesView(navController, cyclesViewModel)
         }
 
 
