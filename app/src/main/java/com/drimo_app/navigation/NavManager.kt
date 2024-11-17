@@ -80,6 +80,11 @@ fun NavManager(navController: NavHostController) {
             CyclesView(navController, cyclesViewModel)
         }
 
+        composable(route = Routes.CyclesResult.route) {
+            val cyclesViewModel: CyclesViewModel = hiltViewModel()
+            CyclesView(navController, cyclesViewModel)
+        }
+
 
         //ejemplo de navegación con deep links
 //        composable(route = "Detail/{id}/?{opcional}", arguments = listOf(
