@@ -29,3 +29,24 @@ fun clearInfoUser(context: Context) {
         apply()
     }
 }
+
+fun saveUserSleepTime(context: Context, valor: Int) {
+    val sharedPreferences = context.getSharedPreferences("user_sleep_time", Context.MODE_PRIVATE)
+    with(sharedPreferences.edit()) {
+        putInt("sleep_duration", valor)
+        apply()
+    }
+}
+
+fun getUserSleepTime(context: Context): Int {
+    val sharedPreferences = context.getSharedPreferences("user_sleep_time", Context.MODE_PRIVATE)
+    return sharedPreferences.getInt("sleep_duration", 0)
+}
+
+fun clearUserSleepTime(context: Context) {
+    val sharedPreferences = context.getSharedPreferences("user_sleep_time", Context.MODE_PRIVATE)
+    with(sharedPreferences.edit()) {
+        remove("sleep_duration")
+        apply()
+    }
+}
