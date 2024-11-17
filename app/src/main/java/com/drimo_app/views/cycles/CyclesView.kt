@@ -94,7 +94,7 @@ fun ContentCyclesView(navController: NavController, cyclesViewModel: CyclesViewM
             InfoCard(
                 title = "Dormir ahora",
                 description = "Calcula los ciclos de sueño necesarios al acostarse en este momento",
-                onClick = {  }
+                onClick = { cyclesViewModel.calculateCyclesNow(navController, currentTime) }
             )
 
             Spacer(modifier = Modifier.height(12.dp))
