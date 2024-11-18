@@ -24,6 +24,7 @@ class CyclesViewModel @Inject constructor(
         hour: Date,
         isWakeUpTime: Boolean = false
     ) {
+
         val sleepCycles = cycleRepository.calculateSleepCycles(hour, isWakeUpTime)
         state = state.copy(sleepCycles = sleepCycles)
         state = state.copy(hourCurrently = hour)

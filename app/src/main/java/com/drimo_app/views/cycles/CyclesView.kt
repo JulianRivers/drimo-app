@@ -11,7 +11,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -26,9 +29,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.drimo_app.R
+import com.drimo_app.components.MainTextField
+import com.drimo_app.components.MessageDialog
+import com.drimo_app.components.SpaceH
+import com.drimo_app.model.app.Routes
+import com.drimo_app.ui.theme.White
+import com.drimo_app.util.Constants.Companion.timeFormat
 import com.drimo_app.viewmodels.cycles.CyclesViewModel
 import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
@@ -128,6 +138,19 @@ fun ContentCyclesView(navController: NavController, cyclesViewModel: CyclesViewM
             )
         }
     }
+    if (cyclesViewModel.state.showAskHourSleep) {
+        ModalAskSleepTime(
+            onClick = {},
+            cyclesViewModel
+        )
+    }
+
+    if (cyclesViewModel.state.showAskHourSleep) {
+        ModalAskSleepTime(
+            onClick = {},
+            cyclesViewModel
+        )
+    }
 }
 
 @Composable
@@ -137,7 +160,7 @@ fun InfoCard(title: String, description: String, onClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
-        colors = androidx.compose.material3.CardDefaults.cardColors(
+        colors = CardDefaults.cardColors(
             containerColor = Color(0xFF2A2A5E)
         ),
         onClick = onClick
@@ -159,4 +182,83 @@ fun InfoCard(title: String, description: String, onClick: () -> Unit) {
             )
         }
     }
+}
+
+@SuppressLint("UnrememberedMutableState")
+@Composable
+private fun ModalAskSleepTime(onClick: () -> Unit, cyclesViewModel: CyclesViewModel) {
+    AlertDialog(
+        onDismissRequest = {
+
+        },
+        title = {
+            Text(
+                text = "Antes de comenzar",
+                style = MaterialTheme.typography.bodyMedium,
+                color = White,
+            )
+        },
+        text = {
+            Column {
+                Text(
+                    text = "Cuéntanos. ¿Cúanto tiempo te toma dormir? El tiempo que elijas se tomará como base para los cálculos en la aplicación.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = White,
+                )
+                SpaceH(10.dp)
+                MainTextField(
+                    value = timeFormat.format(cyclesViewModel.state.hourCurrently),
+                    onValueChange = {},
+                    label = "Correo electronico",
+                )
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = onClick
+            ) {
+                Text("Aceptar")
+            }
+        }
+    )
+}
+
+
+@SuppressLint("UnrememberedMutableState")
+@Composable
+private fun ModalAskHourSleep(onClick: () -> Unit, cyclesViewModel: CyclesViewModel) {
+    AlertDialog(
+        onDismissRequest = {
+
+        },
+        title = {
+            Text(
+                text = "Antes de comenzar",
+                style = MaterialTheme.typography.bodyMedium,
+                color = White,
+            )
+        },
+        text = {
+            Column {
+                Text(
+                    text = "Cuéntanos. ¿Cúanto tiempo te toma dormir? El tiempo que elijas se tomará como base para los cálculos en la aplicación.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = White,
+                )
+                SpaceH(10.dp)
+                MainTextField(
+                    value = timeFormat.format(cyclesViewModel.state.hourCurrently),
+                    onValueChange = {},
+                    label = "Correo electronico",
+                )
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = onClick
+            ) {
+                Text("Aceptar")
+            }
+        }
+    )
 }
