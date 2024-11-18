@@ -10,16 +10,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.drimo_app.model.app.Routes
-import com.drimo_app.model.dreams.Dream
-import com.drimo_app.model.dreams.UpdateDreamState
-import com.drimo_app.model.patterns.Factor
-import com.drimo_app.model.patterns.SleepPattern
 import com.drimo_app.viewmodels.cycles.CyclesViewModel
 import com.drimo_app.viewmodels.dreams.AddDreamViewModel
 import com.drimo_app.viewmodels.dreams.UpdateDreamViewModel
 import com.drimo_app.viewmodels.inicio.LoginViewModel
 import com.drimo_app.viewmodels.inicio.RegisterViewModel
 import com.drimo_app.viewmodels.patterns.PatternsViewModel
+import com.drimo_app.views.cycles.CyclesResultView
 import com.drimo_app.views.cycles.CyclesView
 import com.drimo_app.views.dreams.AddDreamView
 import com.drimo_app.views.dreams.DreamView
@@ -27,12 +24,11 @@ import com.drimo_app.views.dreams.EditDreamView
 import com.drimo_app.views.patterns.PatternsView
 import com.drimo_app.views.start.LoginView
 import com.drimo_app.views.start.RegisterView
-import com.google.gson.Gson
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NavManager(navController: NavHostController) {
-
+    val cyclesViewModel: CyclesViewModel = hiltViewModel()
     NavHost(navController = navController, startDestination = Routes.Login.route) {
         composable(route = Routes.Login.route) {
             val loginViewModel: LoginViewModel = hiltViewModel()
@@ -76,13 +72,11 @@ fun NavManager(navController: NavHostController) {
         }
 
         composable(route = Routes.Cycles.route) {
-            val cyclesViewModel: CyclesViewModel = hiltViewModel()
             CyclesView(navController, cyclesViewModel)
         }
 
         composable(route = Routes.CyclesResult.route) {
-            val cyclesViewModel: CyclesViewModel = hiltViewModel()
-            CyclesView(navController, cyclesViewModel)
+            CyclesResultView(navController, cyclesViewModel)
         }
 
 

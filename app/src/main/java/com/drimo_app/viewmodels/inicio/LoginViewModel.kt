@@ -30,8 +30,8 @@ class LoginViewModel @Inject constructor(private val repo: UserRepository, @Appl
 
     fun iniciarSesion(navController: NavController) {
         viewModelScope.launch {
-            val email = "eq.${state.correo}"
-            val password = "eq.${state.password}"
+            val email = "eq.${state.correo.trim()}"
+            val password = "eq.${state.password.trim()}"
             val response = repo.login(email, password)
 
             if (response.isSuccessful && response.body()?.isNotEmpty() == true) {

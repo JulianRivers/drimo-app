@@ -9,7 +9,6 @@ import com.drimo_app.data.repository.CycleRepository
 import com.drimo_app.model.app.Routes
 import com.drimo_app.model.cycles.CycleState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.util.Calendar
 import java.util.Date
 import javax.inject.Inject
 
@@ -27,6 +26,7 @@ class CyclesViewModel @Inject constructor(
     ) {
         val sleepCycles = cycleRepository.calculateSleepCycles(hour, isWakeUpTime)
         state = state.copy(sleepCycles = sleepCycles)
+        state = state.copy(hourCurrently = hour)
         navController.navigate(Routes.CyclesResult.route)
     }
 
