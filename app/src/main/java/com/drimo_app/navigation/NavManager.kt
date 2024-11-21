@@ -15,6 +15,7 @@ import com.drimo_app.viewmodels.dreams.AddDreamViewModel
 import com.drimo_app.viewmodels.dreams.UpdateDreamViewModel
 import com.drimo_app.viewmodels.inicio.LoginViewModel
 import com.drimo_app.viewmodels.inicio.RegisterViewModel
+import com.drimo_app.viewmodels.inicio.SplashViewModel
 import com.drimo_app.viewmodels.patterns.PatternsViewModel
 import com.drimo_app.views.cycles.CyclesResultView
 import com.drimo_app.views.cycles.CyclesView
@@ -24,12 +25,19 @@ import com.drimo_app.views.dreams.EditDreamView
 import com.drimo_app.views.patterns.PatternsView
 import com.drimo_app.views.start.LoginView
 import com.drimo_app.views.start.RegisterView
+import com.drimo_app.views.start.SplashView
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NavManager(navController: NavHostController) {
     val cyclesViewModel: CyclesViewModel = hiltViewModel()
-    NavHost(navController = navController, startDestination = Routes.Login.route) {
+    NavHost(navController = navController, startDestination = Routes.Splash.route) {
+
+        composable(route = Routes.Splash.route) {
+            val splashViewModel: SplashViewModel = hiltViewModel()
+            SplashView(navController, splashViewModel)
+        }
+
         composable(route = Routes.Login.route) {
             val loginViewModel: LoginViewModel = hiltViewModel()
             LoginView(navController, loginViewModel)

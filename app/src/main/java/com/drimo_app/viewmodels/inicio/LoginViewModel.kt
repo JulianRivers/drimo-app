@@ -10,7 +10,7 @@ import androidx.navigation.NavController
 import com.drimo_app.data.repository.UserRepository
 import com.drimo_app.model.app.Routes
 import com.drimo_app.model.start.LoginState
-import com.drimo_app.util.saveInfoUser
+import com.drimo_app.util.saveUserId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
@@ -37,7 +37,7 @@ class LoginViewModel @Inject constructor(private val repo: UserRepository, @Appl
             if (response.isSuccessful && response.body()?.isNotEmpty() == true) {
                 val user = response.body()?.firstOrNull()
                 user?.let {
-                    saveInfoUser(context, it.id)
+                    saveUserId(context, it.id)
                     navController.navigate(Routes.Dreams.route)
                 }
             } else {

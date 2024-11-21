@@ -2,14 +2,13 @@ package com.drimo_app.viewmodels.dreams
 
 import android.content.Context
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.drimo_app.data.repository.DreamRepository
 import com.drimo_app.model.dreams.AddDreamState
-import com.drimo_app.util.getInfoUser
+import com.drimo_app.util.getUserId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
@@ -82,7 +81,7 @@ class AddDreamViewModel @Inject constructor(private val repo: DreamRepository, @
                 showDialog = true
                 return@launch
             }
-            val userId = getInfoUser(context) ?: -1
+            val userId = getUserId(context) ?: -1
 
             // Llamar al repositorio para agregar el sueño
             val response = repo.addDream(

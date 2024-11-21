@@ -145,6 +145,6 @@ fun RowScope.AddFloatingItem(
 }
 
 private fun shouldShowBottomBar(route: String?): Boolean {
-    val routesWithoutBottomBar = listOf(Routes.Login.route, Routes.Register.route, Routes.CyclesResult.route)
+    val routesWithoutBottomBar = listOf(Routes.Login.route, Routes.Register.route, Routes.CyclesResult.route, Routes.Splash.route)
     return route != null && route !in routesWithoutBottomBar
 }
