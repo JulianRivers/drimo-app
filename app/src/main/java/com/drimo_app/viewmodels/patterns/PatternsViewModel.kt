@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.drimo_app.data.repository.DreamRepository
 import com.drimo_app.model.patterns.Factor
 import com.drimo_app.model.patterns.SleepPattern
-import com.drimo_app.util.getInfoUser
+import com.drimo_app.util.getUserId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
@@ -21,7 +21,7 @@ class PatternsViewModel @Inject constructor(private val repo: DreamRepository, @
     fun loadStatistics() {
         viewModelScope.launch {
             try {
-                val userId = getInfoUser(context) ?: -1
+                val userId = getUserId(context) ?: -1
                 val response = repo.getDreamStatistics(userId)
                 if (response.isSuccessful) {
                     val dreams = response.body() ?: emptyList()

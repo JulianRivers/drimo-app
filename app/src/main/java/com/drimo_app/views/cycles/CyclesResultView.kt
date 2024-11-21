@@ -55,7 +55,7 @@ fun CyclesResultView(navController: NavController, cyclesViewModel: CyclesViewMo
 fun ContentCyclesResultView(navController: NavController, cyclesViewModel: CyclesViewModel) {
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
-            painter = painterResource(id = R.drawable.background_3),
+            painter = painterResource(id = R.drawable.background_2),
             contentDescription = "background",
             modifier = Modifier.fillMaxSize()
         )

@@ -3,7 +3,7 @@ package com.drimo_app.util
 import android.content.Context
 
 // Guardar el ID del usuario
-fun saveInfoUser(context: Context, id: Int) {
+fun saveUserId(context: Context, id: Int) {
     val sharedPref = context.getSharedPreferences("user", Context.MODE_PRIVATE)
     with(sharedPref.edit()) {
         putInt("Id", id)
@@ -12,7 +12,7 @@ fun saveInfoUser(context: Context, id: Int) {
 }
 
 // Obtener el ID del usuario
-fun getInfoUser(context: Context): Int? {
+fun getUserId(context: Context): Int? {
     val sharedPref = context.getSharedPreferences("user", Context.MODE_PRIVATE)
     return if (sharedPref.contains("Id")) {
         sharedPref.getInt("Id", -1)
@@ -22,7 +22,7 @@ fun getInfoUser(context: Context): Int? {
 }
 
 // Eliminar el ID del usuario
-fun clearInfoUser(context: Context) {
+fun clearUserId(context: Context) {
     val sharedPref = context.getSharedPreferences("user", Context.MODE_PRIVATE)
     with(sharedPref.edit()) {
         remove("Id")
