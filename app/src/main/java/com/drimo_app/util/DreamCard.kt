@@ -22,5 +22,11 @@ fun getMonthName(dateString: String): String {
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun groupDreamsByMonth(dreams: List<Dream>): Map<String, List<Dream>> {
-    return dreams.groupBy { getMonthName(it.dateDream) }
+    return dreams
+        .groupBy { getMonthName(it.dateDream) }
+        .mapValues { (_, dreamsInMonth) ->
+            dreamsInMonth.sortedByDescending { dream ->
+                ZonedDateTime.parse(dream.dateDream, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+            }
+        }
 }

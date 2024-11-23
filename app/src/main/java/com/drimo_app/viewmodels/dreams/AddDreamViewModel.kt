@@ -115,4 +115,10 @@ class AddDreamViewModel @Inject constructor(private val repo: DreamRepository, @
             sleepFactors = emptyList(),
         )
     }
+
+    fun logout() {
+        viewModelScope.launch {
+            com.drimo_app.util.clearUserId(context)
+        }
+    }
 }

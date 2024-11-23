@@ -1,5 +1,6 @@
 package com.drimo_app.viewmodels.dreams
 
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -8,12 +9,14 @@ import androidx.lifecycle.viewModelScope
 import com.drimo_app.data.repository.DreamRepository
 import com.drimo_app.model.dreams.UpdateDreamRequest
 import com.drimo_app.model.dreams.UpdateDreamState
+import com.drimo_app.util.clearUserId
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class UpdateDreamViewModel @Inject constructor(private val repo: DreamRepository): ViewModel() {
+class UpdateDreamViewModel @Inject constructor(private val repo: DreamRepository, @ApplicationContext private val context: Context): ViewModel() {
 
     var state by mutableStateOf(UpdateDreamState())
         private set
@@ -135,5 +138,11 @@ class UpdateDreamViewModel @Inject constructor(private val repo: DreamRepository
                 message = "Ocurrio un error"
             }
        }
+    }
+
+    fun logout() {
+        viewModelScope.launch {
+            clearUserId(context)
+        }
     }
 }

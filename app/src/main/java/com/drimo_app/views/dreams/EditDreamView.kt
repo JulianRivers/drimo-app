@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -66,19 +67,42 @@ fun ContentEditDreamView(navController: NavController, updateDreamViewModel: Upd
     val message = updateDreamViewModel.message
 
     Box(modifier = Modifier.fillMaxSize()) {
+        // Fondo
         Image(
             painter = painterResource(id = R.drawable.background_2),
             contentDescription = null,
             modifier = Modifier.fillMaxSize()
         )
+
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            // Ícono de cerrar sesión
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.vector),
+                    contentDescription = "Cerrar sesión",
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .clickable {
+                            updateDreamViewModel.logout()
+                            navController.navigate("login")
+                        }
+                        .size(32.dp)
+                )
+            }
+
             SpaceH(size = 120.dp)
             Text(text = "Edita tu sueño", style = MaterialTheme.typography.headlineMedium)
             SpaceH(size = 50.dp)
+
+            // Campos de texto para edición
             MainTextField(
                 value = state.title,
                 onValueChange = { updateDreamViewModel.onValue(it, "title") },
@@ -96,7 +120,7 @@ fun ContentEditDreamView(navController: NavController, updateDreamViewModel: Upd
             )
             SpaceH(size = 15.dp)
 
-            // Tags Section
+            // Sección de etiquetas
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -106,9 +130,12 @@ fun ContentEditDreamView(navController: NavController, updateDreamViewModel: Upd
                 MainTextField(
                     value = tagInput.value,
                     onValueChange = { tagInput.value = it },
-                    label = "Etiquetas maximo 3",
+                    label = "Etiquetas máximo 3",
                     keyboardType = KeyboardType.Text,
-                    modifier = Modifier.padding(horizontal = 30.dp).height(56.dp).width(250.dp)
+                    modifier = Modifier
+                        .padding(horizontal = 30.dp)
+                        .height(56.dp)
+                        .width(250.dp)
                 )
                 MainButton(
                     text = "+",
@@ -119,7 +146,9 @@ fun ContentEditDreamView(navController: NavController, updateDreamViewModel: Upd
                             tagInput.value = ""
                         }
                     },
-                    modifierButton = Modifier.height(50.dp).width(50.dp),
+                    modifierButton = Modifier
+                        .height(50.dp)
+                        .width(50.dp)
                 )
             }
             SpaceH(size = 10.dp)
@@ -137,7 +166,7 @@ fun ContentEditDreamView(navController: NavController, updateDreamViewModel: Upd
                             .height(45.dp)
                             .padding(horizontal = 6.dp)
                             .background(Color(0xFF1F265E), shape = RoundedCornerShape(12.dp))
-                            .padding(horizontal = 5.dp )
+                            .padding(horizontal = 5.dp)
                             .clickable {
                                 val updatedTags = state.tags - tag
                                 updateDreamViewModel.onValue(updatedTags, "tags")
@@ -159,14 +188,12 @@ fun ContentEditDreamView(navController: NavController, updateDreamViewModel: Upd
 
             SpaceH(size = 15.dp)
 
-
-            // Sleep Factors Section
+            // Factores de sueño
             Text(text = "Cuéntame más de tu sueño", style = MaterialTheme.typography.headlineSmall)
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-
                 val factorLabels = listOf("Lúcido", "Pesadilla", "Sueño recurrente")
                 factorLabels.forEach { factor ->
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -185,7 +212,10 @@ fun ContentEditDreamView(navController: NavController, updateDreamViewModel: Upd
                     }
                 }
             }
+
             SpaceH(size = 15.dp)
+
+            // Botones de edición y eliminación
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center

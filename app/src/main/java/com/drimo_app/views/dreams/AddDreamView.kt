@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -55,11 +56,6 @@ fun AddDreamView(navController: NavController, addDreamViewModel: AddDreamViewMo
 fun ContentAddDreamView(navController: NavController, addDreamViewModel: AddDreamViewModel) {
     val state = addDreamViewModel.state
 
-    // Observa el estado del ViewModel para mostrar el mensaje de éxito o error
-    val showDialog = addDreamViewModel.showDialog
-    val isSuccess = addDreamViewModel.isSuccess
-    val message = addDreamViewModel.message
-
     val sleepFactors = remember { mutableStateListOf(false, false, false) }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -69,13 +65,35 @@ fun ContentAddDreamView(navController: NavController, addDreamViewModel: AddDrea
             modifier = Modifier.fillMaxSize()
         )
         Column(
-            modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            // Ícono de cerrar sesión
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.vector),
+                    contentDescription = "Cerrar sesión",
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .clickable {
+                            addDreamViewModel.logout() // Llama a la función para cerrar sesión
+                            navController.navigate("login") // Redirige al usuario a la pantalla de inicio de sesión
+                        }
+                        .size(32.dp)
+                )
+            }
+
             SpaceH(size = 120.dp)
             Text(text = "Registra tus sueños", style = MaterialTheme.typography.headlineMedium)
             SpaceH(size = 50.dp)
+
             MainTextField(
                 value = state.title,
                 onValueChange = { addDreamViewModel.onValue(it, "title") },
@@ -83,6 +101,7 @@ fun ContentAddDreamView(navController: NavController, addDreamViewModel: AddDrea
                 keyboardType = KeyboardType.Text
             )
             SpaceH(size = 15.dp)
+
             MainTextField(
                 value = state.description,
                 onValueChange = { addDreamViewModel.onValue(it, "description") },
@@ -92,6 +111,7 @@ fun ContentAddDreamView(navController: NavController, addDreamViewModel: AddDrea
                 singleLine = false
             )
             SpaceH(size = 15.dp)
+
             // Tags Section
             val tagInput = remember { mutableStateOf("") }
             val tags = state.tags
@@ -106,7 +126,10 @@ fun ContentAddDreamView(navController: NavController, addDreamViewModel: AddDrea
                     onValueChange = { tagInput.value = it },
                     label = "Etiquetas maximo 3",
                     keyboardType = KeyboardType.Text,
-                    modifier = Modifier.padding(horizontal = 30.dp).height(56.dp).width(250.dp)
+                    modifier = Modifier
+                        .padding(horizontal = 30.dp)
+                        .height(56.dp)
+                        .width(250.dp)
                 )
                 MainButton(
                     text = "+",
@@ -117,7 +140,9 @@ fun ContentAddDreamView(navController: NavController, addDreamViewModel: AddDrea
                             tagInput.value = ""
                         }
                     },
-                    modifierButton = Modifier.height(50.dp).width(50.dp),
+                    modifierButton = Modifier
+                        .height(50.dp)
+                        .width(50.dp),
                 )
             }
             SpaceH(size = 10.dp)
@@ -135,7 +160,7 @@ fun ContentAddDreamView(navController: NavController, addDreamViewModel: AddDrea
                             .height(45.dp)
                             .padding(horizontal = 6.dp)
                             .background(Color(0xFF1F265E), shape = RoundedCornerShape(12.dp))
-                            .padding(horizontal = 5.dp )
+                            .padding(horizontal = 5.dp)
                             .clickable {
                                 val updatedTags = tags - tag
                                 addDreamViewModel.onValue(updatedTags, "tags")
@@ -190,25 +215,25 @@ fun ContentAddDreamView(navController: NavController, addDreamViewModel: AddDrea
                 text = "Guardar sueño",
                 onClick = {
                     addDreamViewModel.addDream()
-
                 },
                 modifierButton = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 30.dp).height(50.dp)
+                    .padding(horizontal = 30.dp)
+                    .height(50.dp)
             )
         }
     }
 
-    if (showDialog) {
+    if (addDreamViewModel.showDialog) {
         MessageDialog(
-            showDialog = mutableStateOf(showDialog),
-            isSuccess = isSuccess,
-            message = message,
+            showDialog = mutableStateOf(addDreamViewModel.showDialog),
+            isSuccess = addDreamViewModel.isSuccess,
+            message = addDreamViewModel.message,
             onDismiss = {
                 addDreamViewModel.showDialog = false
             }
         )
-        if (isSuccess) {
+        if (addDreamViewModel.isSuccess) {
             sleepFactors.clear()
             sleepFactors.addAll(listOf(false, false, false))
         }

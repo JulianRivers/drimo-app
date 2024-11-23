@@ -30,7 +30,6 @@ import com.google.gson.Gson
 import formatDreamDate
 import groupDreamsByMonth
 
-
 @RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -38,14 +37,24 @@ fun DreamView(navController: NavController, dreamViewModel: DreamViewModel = hil
     val dreams = dreamViewModel.dreams.collectAsState(initial = emptyList())
     val groupedDreams = groupDreamsByMonth(dreams.value)
 
-    ContentDreamView(groupedDreams = groupedDreams) { dream ->
+    ContentDreamView(
+        groupedDreams = groupedDreams,
+        onLogoutClick = {
+            dreamViewModel.logout()
+            navController.navigate(Routes.Login.route)
+        }
+    ) { dream ->
         navController.navigate(Routes.EditDream.createRoute(dream.id))
     }
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun ContentDreamView(groupedDreams: Map<String, List<Dream>>, onDreamClick: (Dream) -> Unit) {
+fun ContentDreamView(
+    groupedDreams: Map<String, List<Dream>>,
+    onLogoutClick: () -> Unit,
+    onDreamClick: (Dream) -> Unit
+) {
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.background_2),
@@ -59,6 +68,22 @@ fun ContentDreamView(groupedDreams: Map<String, List<Dream>>, onDreamClick: (Dre
                 .padding(horizontal = 16.dp, vertical = 24.dp),
             verticalArrangement = Arrangement.Top
         ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.vector),
+                    contentDescription = "Cerrar sesión",
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .clickable(onClick = onLogoutClick)
+                        .size(32.dp)
+                )
+            }
+
+            // Título
             Text(
                 text = "Sueños",
                 style = MaterialTheme.typography.headlineMedium,
@@ -70,10 +95,10 @@ fun ContentDreamView(groupedDreams: Map<String, List<Dream>>, onDreamClick: (Dre
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            // Lista de sueños
             LazyColumn {
                 groupedDreams.forEach { (month, dreams) ->
                     item {
-                        // Encabezado para cada mes
                         Text(
                             text = month.capitalize(),
                             fontSize = 20.sp,

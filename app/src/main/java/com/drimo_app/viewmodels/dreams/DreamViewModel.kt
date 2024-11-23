@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.drimo_app.data.repository.DreamRepository
 import com.drimo_app.model.dreams.Dream
+import com.drimo_app.util.clearUserId
 import com.drimo_app.util.getUserId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -31,6 +32,12 @@ class DreamViewModel @Inject constructor(private val repository: DreamRepository
             } else {
                 print("F")
             }
+        }
+    }
+
+    fun logout() {
+        viewModelScope.launch {
+            clearUserId(context)
         }
     }
 }
