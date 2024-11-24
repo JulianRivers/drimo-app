@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,10 +20,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.drimo_app.R
 import com.drimo_app.model.patterns.SleepPattern
+import com.drimo_app.viewmodels.patterns.PatternsViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun PatternsView(sleepPattern: SleepPattern) {
+fun PatternsView(patternsViewModel: PatternsViewModel) {
+
+    val sleepPattern = patternsViewModel.sleepPattern.value
+
+    LaunchedEffect(Unit) {
+        patternsViewModel.loadStatistics()
+    }
     Scaffold {
         ContentPatternsView(sleepPattern)
     }
@@ -149,7 +157,7 @@ fun ContentPatternsView(sleepPattern: SleepPattern) {
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                sleepPattern.tags.forEach { tag ->
+                sleepPattern.tags.take(3).forEach { tag ->
                     TagItem(tag)
                 }
             }

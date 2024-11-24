@@ -5,3 +5,8 @@ data class RegisterState(
     val password : String = "",
     val confirmPassword : String = ""
 )
+
+data class RegisterRequest(
+    val email: String,
+    val password: String,
+)

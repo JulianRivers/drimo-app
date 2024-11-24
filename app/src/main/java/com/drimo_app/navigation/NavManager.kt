@@ -1,17 +1,23 @@
 package com.drimo_app.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.drimo_app.model.app.Routes
-import com.drimo_app.model.dreams.Dream
-import com.drimo_app.model.patterns.Factor
-import com.drimo_app.model.patterns.SleepPattern
+import com.drimo_app.viewmodels.cycles.CyclesViewModel
 import com.drimo_app.viewmodels.dreams.AddDreamViewModel
+import com.drimo_app.viewmodels.dreams.UpdateDreamViewModel
 import com.drimo_app.viewmodels.inicio.LoginViewModel
 import com.drimo_app.viewmodels.inicio.RegisterViewModel
+import com.drimo_app.viewmodels.inicio.SplashViewModel
+import com.drimo_app.viewmodels.patterns.PatternsViewModel
+import com.drimo_app.views.cycles.CyclesResultView
 import com.drimo_app.views.cycles.CyclesView
 import com.drimo_app.views.dreams.AddDreamView
 import com.drimo_app.views.dreams.DreamView
@@ -19,11 +25,19 @@ import com.drimo_app.views.dreams.EditDreamView
 import com.drimo_app.views.patterns.PatternsView
 import com.drimo_app.views.start.LoginView
 import com.drimo_app.views.start.RegisterView
+import com.drimo_app.views.start.SplashView
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NavManager(navController: NavHostController) {
+    val cyclesViewModel: CyclesViewModel = hiltViewModel()
+    NavHost(navController = navController, startDestination = Routes.Splash.route) {
 
-    NavHost(navController = navController, startDestination = Routes.Login.route) {
+        composable(route = Routes.Splash.route) {
+            val splashViewModel: SplashViewModel = hiltViewModel()
+            SplashView(navController, splashViewModel)
+        }
+
         composable(route = Routes.Login.route) {
             val loginViewModel: LoginViewModel = hiltViewModel()
             LoginView(navController, loginViewModel)
@@ -39,34 +53,38 @@ fun NavManager(navController: NavHostController) {
             AddDreamView(navController, addDreamViewModel)
         }
 
-        composable(route = Routes.EditDream.route) {
-            EditDreamView(navController)
+        composable(
+            route = Routes.EditDream.route,
+            arguments = listOf(
+                navArgument("id") { type = NavType.IntType }
+            )
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getInt("id") ?: 0
+
+            val updateDreamViewModel: UpdateDreamViewModel = hiltViewModel()
+
+            EditDreamView(
+                navController = navController,
+                dreamId = id,
+                updateDreamViewModel = updateDreamViewModel
+            )
         }
 
         composable(route = Routes.Dreams.route) {
-            val dreams = listOf(
-                Dream("Gibson se muere", "Íbamos a la casa de Gibson y Gibson se fue a pelear...", "Sáb", 28),
-                Dream("Gibson se muere", "Íbamos a la casa de Gibson y Gibson se fue a pelear...", "Dom", 29)
-            )
-            DreamView(navController = navController, dreams = dreams)
+            DreamView(navController = navController)
         }
 
         composable(route = Routes.Patterns.route) {
-            val sleepPattern = SleepPattern(
-                factors = listOf(
-                    Factor("Recurrente", 4),
-                    Factor("Lucidez", 3),
-                    Factor("Pesadilla", 1)
-                ),
-                tags = listOf("Viaje", "Peligro", "Cancion"),
-                completedCycles = 24,
-                plannedHours = 96
-            )
-            PatternsView(sleepPattern)
+            val patternsViewModel: PatternsViewModel = hiltViewModel()
+            PatternsView(patternsViewModel)
         }
 
         composable(route = Routes.Cycles.route) {
-            CyclesView(navController = navController)
+            CyclesView(navController, cyclesViewModel)
+        }
+
+        composable(route = Routes.CyclesResult.route) {
+            CyclesResultView(navController, cyclesViewModel)
         }
 
 

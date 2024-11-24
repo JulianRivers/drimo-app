@@ -1,6 +1,10 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("org.jetbrains.kotlin.plugin.compose")
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
 }
@@ -8,6 +12,7 @@ plugins {
 android {
     namespace = "com.drimo_app"
     compileSdk = 34
+
 
     defaultConfig {
         applicationId = "com.drimo_app"
@@ -23,12 +28,21 @@ android {
     }
 
     buildTypes {
+        val prop = Properties().apply {
+            load(FileInputStream(File(rootProject.rootDir, "local.properties")))
+        }
+        debug {
+            buildConfigField("String", "API_KEY", prop.getProperty("API_KEY"))
+            buildConfigField("String", "BASE_URL", prop.getProperty("BASE_URL"))
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "API_KEY", prop.getProperty("API_KEY"))
+            buildConfigField("String", "BASE_URL", prop.getProperty("BASE_URL"))
         }
     }
     compileOptions {
@@ -39,10 +53,11 @@ android {
         jvmTarget = "1.8"
     }
     buildFeatures {
+        buildConfig = true
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.10"
     }
     packaging {
         resources {
@@ -70,12 +85,14 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    val nav_version = "2.8.0"
+    val nav_version = "2.8.3"
     implementation("androidx.navigation:navigation-compose:$nav_version")
-    implementation("com.google.dagger:hilt-android:2.44")
+    implementation("com.google.dagger:hilt-android:2.50")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation ("org.jetbrains.kotlin:kotlin-stdlib:1.8.0")
+    kapt("com.google.dagger:hilt-android-compiler:2.50")
 
-    kapt("com.google.dagger:hilt-android-compiler:2.44")
 }
 
 kapt {

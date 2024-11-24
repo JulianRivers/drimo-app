@@ -39,7 +39,7 @@ sealed class BottomBarScreen(
     )
 
     object Blog : BottomBarScreen(
-        route = Routes.EditDream.route,
+        route = Routes.Cycles.route,
         title = "Blog",
         icon = Icons.Default.MailOutline
     )
