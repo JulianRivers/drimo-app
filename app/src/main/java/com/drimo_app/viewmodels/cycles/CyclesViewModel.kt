@@ -1,5 +1,6 @@
 package com.drimo_app.viewmodels.cycles
 
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -8,14 +9,20 @@ import androidx.navigation.NavController
 import com.drimo_app.data.repository.CycleRepository
 import com.drimo_app.model.app.Routes
 import com.drimo_app.model.cycles.CycleState
+import com.drimo_app.util.clearUserSleepTime
+import com.drimo_app.util.getUserSleepTime
+import com.drimo_app.util.saveUserSleepTime
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import java.util.Calendar
 import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
 class CyclesViewModel @Inject constructor(
-    private val cycleRepository: CycleRepository
-): ViewModel() {
+    private val cycleRepository: CycleRepository,
+    @ApplicationContext private val context: Context
+) : ViewModel() {
     var state by mutableStateOf(CycleState())
         private set
 
@@ -24,18 +31,44 @@ class CyclesViewModel @Inject constructor(
         hour: Date,
         isWakeUpTime: Boolean = false
     ) {
-
-        val sleepCycles = cycleRepository.calculateSleepCycles(hour, isWakeUpTime)
+        val userSleepTime = getUserSleepTime(context)
+        if (userSleepTime == -1) {
+            state = state.copy(showAskSleepTime = true)
+            return
+        }
+        val hourPlusMinutes = addMinutes(hour, state.minutesSleepTime)
+        val sleepCycles = cycleRepository.calculateSleepCycles(hourPlusMinutes, isWakeUpTime)
         state = state.copy(sleepCycles = sleepCycles)
-        state = state.copy(hourCurrently = hour)
+        state = state.copy(hourCurrently = hourPlusMinutes)
         navController.navigate(Routes.CyclesResult.route)
     }
 
     fun askWakeUpTime() {
-
+        clearUserSleepTime(context)
     }
 
     fun askBedTime() {
 
+    }
+
+    fun saveSleepTime(navController: NavController, hour: Date) {
+        saveUserSleepTime(context, state.minutesSleepTime)
+        state = state.copy(showAskSleepTime = false)
+        calculateCyclesNow(navController, hour)
+    }
+
+    fun closeModalAskSleepTime() {
+        state = state.copy(showAskSleepTime = false)
+    }
+
+    fun onValueMinutesSleepTime(value: Int) {
+        state = state.copy(minutesSleepTime = value)
+    }
+
+    private fun addMinutes(date: Date, minutes: Int): Date {
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        calendar.add(Calendar.MINUTE, minutes)
+        return calendar.time
     }
 }

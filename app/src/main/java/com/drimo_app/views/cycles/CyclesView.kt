@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.drimo_app.R
@@ -123,7 +124,7 @@ fun ContentCyclesView(navController: NavController, cyclesViewModel: CyclesViewM
             InfoCard(
                 title = "¿A qué hora despertar?",
                 description = "Calcula los ciclos de sueños necesarios según la hora que indiques que quieres dormir",
-                onClick = { /* No hay navegación en este momento */ }
+                onClick = { cyclesViewModel.askWakeUpTime() }
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -135,15 +136,17 @@ fun ContentCyclesView(navController: NavController, cyclesViewModel: CyclesViewM
             )
         }
     }
-    if (cyclesViewModel.state.showAskHourSleep) {
+    if (cyclesViewModel.state.showAskSleepTime) {
         ModalAskSleepTime(
-            onClick = {},
+            onClick = {
+                cyclesViewModel.saveSleepTime(navController, currentTime)
+            },
             cyclesViewModel
         )
     }
 
     if (cyclesViewModel.state.showAskHourSleep) {
-        ModalAskSleepTime(
+        ModalAskHourSleep(
             onClick = {},
             cyclesViewModel
         )
@@ -186,7 +189,7 @@ fun InfoCard(title: String, description: String, onClick: () -> Unit) {
 private fun ModalAskSleepTime(onClick: () -> Unit, cyclesViewModel: CyclesViewModel) {
     AlertDialog(
         onDismissRequest = {
-
+            cyclesViewModel.closeModalAskSleepTime()
         },
         title = {
             Text(
@@ -204,9 +207,14 @@ private fun ModalAskSleepTime(onClick: () -> Unit, cyclesViewModel: CyclesViewMo
                 )
                 SpaceH(10.dp)
                 MainTextField(
-                    value = timeFormat.format(cyclesViewModel.state.hourCurrently),
-                    onValueChange = {},
-                    label = "Correo electronico",
+                    value = cyclesViewModel.state.minutesSleepTime.toString(),
+                    onValueChange = {
+                        it.toIntOrNull()?.let { intValue ->
+                            cyclesViewModel.onValueMinutesSleepTime(intValue)
+                        }
+                    },
+                    label = "Minutos",
+                    keyboardType = KeyboardType.Number
                 )
             }
         },
@@ -226,7 +234,7 @@ private fun ModalAskSleepTime(onClick: () -> Unit, cyclesViewModel: CyclesViewMo
 private fun ModalAskHourSleep(onClick: () -> Unit, cyclesViewModel: CyclesViewModel) {
     AlertDialog(
         onDismissRequest = {
-
+            cyclesViewModel.closeModalAskSleepTime()
         },
         title = {
             Text(

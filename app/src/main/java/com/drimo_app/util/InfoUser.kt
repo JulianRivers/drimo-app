@@ -40,7 +40,7 @@ fun saveUserSleepTime(context: Context, valor: Int) {
 
 fun getUserSleepTime(context: Context): Int {
     val sharedPreferences = context.getSharedPreferences("user_sleep_time", Context.MODE_PRIVATE)
-    return sharedPreferences.getInt("sleep_duration", 0)
+    return sharedPreferences.getInt("sleep_duration", -1)
 }
 
 fun clearUserSleepTime(context: Context) {
