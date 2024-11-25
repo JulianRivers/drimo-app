@@ -25,7 +25,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
@@ -91,11 +90,11 @@ fun ContentBlogView(navController: NavController, blogViewModel: BlogViewModel) 
                 drawableRes = R.drawable.ciclos,
                 onClick = { selectedImage = R.drawable.ciclos }
             )
-            SpaceH(size = 10.dp)
             ClickableImage(
                 drawableRes = R.drawable.mejorar,
                 onClick = { selectedImage = R.drawable.mejorar }
             )
+            SpaceH(size = 50.dp)
         }
     }
 
