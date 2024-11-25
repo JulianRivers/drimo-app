@@ -1,5 +1,6 @@
 package com.drimo_app.navigation
 
+
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
@@ -18,7 +19,6 @@ import com.drimo_app.viewmodels.inicio.LoginViewModel
 import com.drimo_app.viewmodels.inicio.RegisterViewModel
 import com.drimo_app.viewmodels.inicio.SplashViewModel
 import com.drimo_app.viewmodels.patterns.PatternsViewModel
-import com.drimo_app.views.blog.BlogView
 import com.drimo_app.views.cycles.CyclesResultView
 import com.drimo_app.views.cycles.CyclesView
 import com.drimo_app.views.dreams.AddDreamView
@@ -28,7 +28,7 @@ import com.drimo_app.views.patterns.PatternsView
 import com.drimo_app.views.start.LoginView
 import com.drimo_app.views.start.RegisterView
 import com.drimo_app.views.start.SplashView
-
+import com.drimo_app.views.blog.BlogView
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NavManager(navController: NavHostController) {
