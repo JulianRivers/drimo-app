@@ -75,7 +75,7 @@ fun ContentEditDreamView(navController: NavController, updateDreamViewModel: Upd
         )
 
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 24.dp),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -98,7 +98,7 @@ fun ContentEditDreamView(navController: NavController, updateDreamViewModel: Upd
                 )
             }
 
-            SpaceH(size = 120.dp)
+            SpaceH(size = 50.dp)
             Text(text = "Edita tu sueño", style = MaterialTheme.typography.headlineMedium)
             SpaceH(size = 50.dp)
 

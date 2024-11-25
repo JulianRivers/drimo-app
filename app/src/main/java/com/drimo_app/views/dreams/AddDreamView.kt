@@ -67,6 +67,7 @@ fun ContentAddDreamView(navController: NavController, addDreamViewModel: AddDrea
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(horizontal = 16.dp, vertical = 24.dp)
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -90,7 +91,7 @@ fun ContentAddDreamView(navController: NavController, addDreamViewModel: AddDrea
                 )
             }
 
-            SpaceH(size = 120.dp)
+            SpaceH(size = 50.dp)
             Text(text = "Registra tus sueños", style = MaterialTheme.typography.headlineMedium)
             SpaceH(size = 50.dp)
 

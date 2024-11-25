@@ -3,6 +3,7 @@ package com.drimo_app.views.patterns
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -18,26 +19,27 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.drimo_app.R
+import com.drimo_app.model.app.Routes
 import com.drimo_app.model.patterns.SleepPattern
 import com.drimo_app.viewmodels.patterns.PatternsViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun PatternsView(patternsViewModel: PatternsViewModel) {
-
-    val sleepPattern = patternsViewModel.sleepPattern.value
+fun PatternsView(patternsViewModel: PatternsViewModel, navController: NavController) {
 
     LaunchedEffect(Unit) {
         patternsViewModel.loadStatistics()
     }
     Scaffold {
-        ContentPatternsView(sleepPattern)
+        ContentPatternsView(patternsViewModel, navController)
     }
 }
 
 @Composable
-fun ContentPatternsView(sleepPattern: SleepPattern) {
+fun ContentPatternsView(patternsViewModel: PatternsViewModel, navController: NavController) {
+    val sleepPattern = patternsViewModel.sleepPattern.value
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.background_2),
@@ -52,11 +54,28 @@ fun ContentPatternsView(sleepPattern: SleepPattern) {
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.vector),
+                    contentDescription = "Cerrar sesión",
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .clickable {
+                            patternsViewModel.logout()
+                            navController.navigate(Routes.Login.route)
+                        }
+                        .size(32.dp)
+                )
+            }
             Text(
                 text = "Patrones de sueño",
                 style = MaterialTheme.typography.headlineMedium,
                 color = Color.White,
-                modifier = Modifier.padding(top = 80.dp)
+                modifier = Modifier.padding(top = 50.dp)
             )
 
             Spacer(modifier = Modifier.height(8.dp))

@@ -56,4 +56,10 @@ class PatternsViewModel @Inject constructor(private val repo: DreamRepository, @
             }
         }
     }
+
+    fun logout() {
+        viewModelScope.launch {
+            com.drimo_app.util.clearUserId(context)
+        }
+    }
 }

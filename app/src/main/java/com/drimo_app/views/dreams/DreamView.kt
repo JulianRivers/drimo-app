@@ -89,7 +89,7 @@ fun ContentDreamView(
                 style = MaterialTheme.typography.headlineMedium,
                 color = Color.White,
                 modifier = Modifier
-                    .padding(top = 80.dp)
+                    .padding(top = 50.dp)
                     .align(Alignment.CenterHorizontally)
             )
 
