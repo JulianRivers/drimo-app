@@ -31,8 +31,7 @@ class CyclesViewModel @Inject constructor(
         hour: Date,
         isWakeUpTime: Boolean = false
     ) {
-        val userSleepTime = getUserSleepTime(context)
-        if (userSleepTime == -1) {
+        if (checkUserHasSleepTime()) {
             state = state.copy(showAskSleepTime = true)
             return
         }
@@ -44,7 +43,7 @@ class CyclesViewModel @Inject constructor(
     }
 
     fun askWakeUpTime() {
-        clearUserSleepTime(context)
+        state = state.copy(showAskHourSleep = true)
     }
 
     fun askBedTime() {
@@ -57,8 +56,18 @@ class CyclesViewModel @Inject constructor(
         calculateCyclesNow(navController, hour)
     }
 
+    fun calculateCyclesSleep(navController: NavController, hour: Date) {
+        saveUserSleepTime(context, state.minutesSleepTime)
+        state = state.copy(showAskSleepTime = false)
+        calculateCyclesNow(navController, hour)
+    }
+
     fun closeModalAskSleepTime() {
         state = state.copy(showAskSleepTime = false)
+    }
+
+    fun closeModalAskHourSleep() {
+        state = state.copy(showAskHourSleep = false)
     }
 
     fun onValueMinutesSleepTime(value: Int) {
@@ -70,5 +79,10 @@ class CyclesViewModel @Inject constructor(
         calendar.time = date
         calendar.add(Calendar.MINUTE, minutes)
         return calendar.time
+    }
+
+    private fun checkUserHasSleepTime(): Boolean {
+        val userSleepTime = getUserSleepTime(context)
+        return userSleepTime == -1
     }
 }
