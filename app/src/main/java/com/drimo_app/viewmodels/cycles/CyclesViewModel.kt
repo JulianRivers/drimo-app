@@ -9,13 +9,13 @@ import androidx.navigation.NavController
 import com.drimo_app.data.repository.CycleRepository
 import com.drimo_app.model.app.Routes
 import com.drimo_app.model.cycles.CycleState
-import com.drimo_app.util.clearUserSleepTime
 import com.drimo_app.util.getUserSleepTime
 import com.drimo_app.util.saveUserSleepTime
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.Calendar
 import java.util.Date
+import java.util.TimeZone
 import javax.inject.Inject
 
 @HiltViewModel
@@ -42,12 +42,9 @@ class CyclesViewModel @Inject constructor(
         navController.navigate(Routes.CyclesResult.route)
     }
 
-    fun askWakeUpTime() {
+    fun askWakeUpTime(isWakeUpTime: Boolean) {
         state = state.copy(showAskHourSleep = true)
-    }
-
-    fun askBedTime() {
-
+        state = state.copy(isWakeUpTime = isWakeUpTime)
     }
 
     fun saveSleepTime(navController: NavController, hour: Date) {
@@ -57,9 +54,12 @@ class CyclesViewModel @Inject constructor(
     }
 
     fun calculateCyclesSleep(navController: NavController, hour: Date) {
-        saveUserSleepTime(context, state.minutesSleepTime)
-        state = state.copy(showAskSleepTime = false)
-        calculateCyclesNow(navController, hour)
+        val hourTarget = Calendar.getInstance(TimeZone.getTimeZone("America/Bogota")).apply {
+            set(Calendar.HOUR_OF_DAY, state.hour)
+            set(Calendar.MINUTE, state.minutes)
+        }.time
+        state = state.copy(showAskHourSleep = false)
+        calculateCyclesNow(navController, hourTarget, state.isWakeUpTime)
     }
 
     fun closeModalAskSleepTime() {
@@ -70,8 +70,12 @@ class CyclesViewModel @Inject constructor(
         state = state.copy(showAskHourSleep = false)
     }
 
-    fun onValueMinutesSleepTime(value: Int) {
-        state = state.copy(minutesSleepTime = value)
+    fun onValue(value: Int, text: String) {
+        when (text) {
+            "hour" -> state = state.copy(hour = value)
+            "minutes" -> state = state.copy(minutes = value)
+            "minutesSleepTime" -> state = state.copy(minutesSleepTime = value)
+        }
     }
 
     private fun addMinutes(date: Date, minutes: Int): Date {

@@ -128,7 +128,7 @@ fun ContentCyclesView(navController: NavController, cyclesViewModel: CyclesViewM
             InfoCard(
                 title = "¿A qué hora despertar?",
                 description = "Calcula los ciclos de sueños necesarios según la hora que indiques que quieres dormir",
-                onClick = { cyclesViewModel.askWakeUpTime() }
+                onClick = { cyclesViewModel.askWakeUpTime(isWakeUpTime = false) }
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -136,7 +136,7 @@ fun ContentCyclesView(navController: NavController, cyclesViewModel: CyclesViewM
             InfoCard(
                 title = "¿A qué hora dormir?",
                 description = "Calcula los ciclos de sueño necesarios según la hora en la que indiques que te quieres levantar",
-                onClick = { /* No hay navegación en este momento */ }
+                onClick = { cyclesViewModel.askWakeUpTime(isWakeUpTime = true) }
             )
         }
     }
@@ -152,7 +152,7 @@ fun ContentCyclesView(navController: NavController, cyclesViewModel: CyclesViewM
     if (cyclesViewModel.state.showAskHourSleep) {
         ModalAskHourSleep(
             onClick = {
-                cyclesViewModel.saveSleepTime(navController, currentTime)
+                cyclesViewModel.calculateCyclesSleep(navController, currentTime)
             },
             cyclesViewModel
         )
@@ -216,7 +216,7 @@ private fun ModalAskSleepTime(onClick: () -> Unit, cyclesViewModel: CyclesViewMo
                     value = cyclesViewModel.state.minutesSleepTime.toString(),
                     onValueChange = {
                         it.toIntOrNull()?.let { intValue ->
-                            cyclesViewModel.onValueMinutesSleepTime(intValue)
+                            cyclesViewModel.onValue(intValue, "minutesSleepTime")
                         }
                     },
                     label = "Minutos",
@@ -268,8 +268,13 @@ private fun ModalAskHourSleep(onClick: () -> Unit, cyclesViewModel: CyclesViewMo
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         MainTextField(
-                            value = cyclesViewModel.state.hour.toString(),
-                            onValueChange = { },
+                            value = cyclesViewModel.state.hour.toString().padStart(2, '0'),
+                            onValueChange = {
+                                val sanitizedValue = it.takeLast(2)
+                                sanitizedValue.toIntOrNull()?.let { intValue ->
+                                    cyclesViewModel.onValue(intValue, "hour")
+                                }
+                            },
                             label = "",
                             modifier = Modifier.width(52.dp),
                             keyboardType = KeyboardType.Number
@@ -289,8 +294,13 @@ private fun ModalAskHourSleep(onClick: () -> Unit, cyclesViewModel: CyclesViewMo
                     )
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         MainTextField(
-                            value = cyclesViewModel.state.minutes.toString(),
-                            onValueChange = { },
+                            value = cyclesViewModel.state.minutes.toString().padStart(2, '0'),
+                            onValueChange = {
+                                val sanitizedValue = it.takeLast(2)
+                                sanitizedValue.toIntOrNull()?.let { intValue ->
+                                    cyclesViewModel.onValue(intValue, "minutes")
+                                }
+                            },
                             label = "",
                             modifier = Modifier.width(52.dp),
                             keyboardType = KeyboardType.Number
