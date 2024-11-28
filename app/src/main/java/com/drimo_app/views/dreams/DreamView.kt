@@ -64,7 +64,7 @@ fun ContentDreamView(
 
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxHeight(0.85f)
                 .padding(horizontal = 16.dp, vertical = 24.dp),
             verticalArrangement = Arrangement.Top
         ) {
