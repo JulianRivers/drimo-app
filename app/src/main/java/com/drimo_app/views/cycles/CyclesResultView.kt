@@ -131,7 +131,12 @@ fun ContentCyclesResultView(navController: NavController, cyclesViewModel: Cycle
                     CycleCard(
                         index = cyclesViewModel.state.sleepCycles.size - index,
                         hour = hour,
-                        onClick = { }
+                        onClick = {
+                            cyclesViewModel.sleepASleepCycle(
+                                navController,
+                                cyclesViewModel.state.sleepCycles.size - index
+                            )
+                        }
                     )
                     SpaceH()
                 }

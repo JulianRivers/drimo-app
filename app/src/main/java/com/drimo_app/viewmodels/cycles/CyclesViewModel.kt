@@ -9,7 +9,9 @@ import androidx.navigation.NavController
 import com.drimo_app.data.repository.CycleRepository
 import com.drimo_app.model.app.Routes
 import com.drimo_app.model.cycles.CycleState
+import com.drimo_app.util.getUserCyclesCompleted
 import com.drimo_app.util.getUserSleepTime
+import com.drimo_app.util.saveUserCyclesCompleted
 import com.drimo_app.util.saveUserSleepTime
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -36,7 +38,11 @@ class CyclesViewModel @Inject constructor(
             return
         }
         val hourPlusMinutes = if (!isWakeUpTime) addMinutes(hour, state.minutesSleepTime) else hour;
-        val sleepCycles = cycleRepository.calculateSleepCycles(hourPlusMinutes, isWakeUpTime, state.minutesSleepTime)
+        val sleepCycles = cycleRepository.calculateSleepCycles(
+            hourPlusMinutes,
+            isWakeUpTime,
+            state.minutesSleepTime
+        )
         state = state.copy(sleepCycles = sleepCycles)
         state = state.copy(hourCurrently = hourPlusMinutes)
         navController.navigate(Routes.CyclesResult.route)
@@ -60,6 +66,12 @@ class CyclesViewModel @Inject constructor(
         }.time
         state = state.copy(showAskHourSleep = false)
         calculateCyclesNow(navController, hourTarget, state.isWakeUpTime)
+    }
+
+    fun sleepASleepCycle(navController: NavController, cycles: Int) {
+        val cyclesCompleted = getUserCyclesCompleted(context)
+        saveUserCyclesCompleted(context, cyclesCompleted + cycles)
+        navController.navigate(Routes.Patterns.route)
     }
 
     fun closeModalAskSleepTime() {

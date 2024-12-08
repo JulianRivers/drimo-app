@@ -50,3 +50,25 @@ fun clearUserSleepTime(context: Context) {
         apply()
     }
 }
+
+
+fun saveUserCyclesCompleted(context: Context, valor: Int) {
+    val sharedPreferences = context.getSharedPreferences("user_cycles_completed", Context.MODE_PRIVATE)
+    with(sharedPreferences.edit()) {
+        putInt("cycles_completed", valor)
+        apply()
+    }
+}
+
+fun getUserCyclesCompleted(context: Context): Int {
+    val sharedPreferences = context.getSharedPreferences("user_cycles_completed", Context.MODE_PRIVATE)
+    return sharedPreferences.getInt("cycles_completed", 0)
+}
+
+fun clearUserCyclesCompleted(context: Context) {
+    val sharedPreferences = context.getSharedPreferences("user_cycles_completed", Context.MODE_PRIVATE)
+    with(sharedPreferences.edit()) {
+        remove("cycles_completed")
+        apply()
+    }
+}
