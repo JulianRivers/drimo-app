@@ -50,6 +50,7 @@ fun CyclesResultView(navController: NavController, cyclesViewModel: CyclesViewMo
 
 @Composable
 fun ContentCyclesResultView(navController: NavController, cyclesViewModel: CyclesViewModel) {
+    val action = if (cyclesViewModel.state.isWakeUpTime) "levantarás" else "dormirás"
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.background_3),
@@ -82,7 +83,7 @@ fun ContentCyclesResultView(navController: NavController, cyclesViewModel: Cycle
                 )
             }
             Text(
-                text = "Si te dormirás a las ${timeFormat.format(cyclesViewModel.state.hourCurrently)}",
+                text = "Si te $action a las ${timeFormat.format(cyclesViewModel.state.hourCurrently)}",
                 style = MaterialTheme.typography.headlineSmall,
                 color = LightGrey,
                 modifier = Modifier

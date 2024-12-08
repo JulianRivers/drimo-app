@@ -244,7 +244,11 @@ private fun ModalAskHourSleep(onClick: () -> Unit, cyclesViewModel: CyclesViewMo
         },
         title = {
             Text(
-                text = "¿A qué horas te irás a la cama?",
+                text =  if (cyclesViewModel.state.isWakeUpTime) {
+                    "¿A qué horas te despertarás?"
+                } else {
+                    "¿A qué horas te irás a la cama?"
+                },
                 style = MaterialTheme.typography.bodyMedium,
                 color = White,
             )
