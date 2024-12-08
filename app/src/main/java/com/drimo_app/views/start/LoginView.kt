@@ -77,12 +77,13 @@ fun ContentLoginView(navController: NavController, loginViewModel: LoginViewMode
             )
             SpaceH(size = 10.dp)
             Text(
+                modifier = Modifier.clickable { loginViewModel.guestLogin(navController) },
                 text = "Ingresar como invitado",
                 color = MaterialTheme.colorScheme.primary,
                 style = MaterialTheme.typography.bodyLarge
             )
             SpaceH(size = 200.dp)
-            Row (modifier = Modifier.clickable {  navController.navigate(Routes.Register.route) }){
+            Row(modifier = Modifier.clickable { navController.navigate(Routes.Register.route) }) {
                 Text(
                     text = "¿No tienes una cuenta? ",
                     color = MaterialTheme.colorScheme.secondary,

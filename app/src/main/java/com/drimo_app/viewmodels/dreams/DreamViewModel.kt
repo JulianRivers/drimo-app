@@ -5,7 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.drimo_app.data.repository.DreamRepository
 import com.drimo_app.model.dreams.Dream
+import com.drimo_app.util.clearUserCyclesCompleted
 import com.drimo_app.util.clearUserId
+import com.drimo_app.util.clearUserSleepTime
 import com.drimo_app.util.getUserId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -15,7 +17,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DreamViewModel @Inject constructor(private val repository: DreamRepository, @ApplicationContext private val context: Context) : ViewModel() {
+class DreamViewModel @Inject constructor(
+    private val repository: DreamRepository,
+    @ApplicationContext private val context: Context
+) : ViewModel() {
     private val _dreams = MutableStateFlow<List<Dream>>(emptyList())
     val dreams: StateFlow<List<Dream>> get() = _dreams
 
@@ -38,6 +43,8 @@ class DreamViewModel @Inject constructor(private val repository: DreamRepository
     fun logout() {
         viewModelScope.launch {
             clearUserId(context)
+            clearUserSleepTime(context)
+            clearUserCyclesCompleted(context)
         }
     }
 }

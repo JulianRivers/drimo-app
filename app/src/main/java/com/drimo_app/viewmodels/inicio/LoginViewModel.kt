@@ -14,10 +14,14 @@ import com.drimo_app.util.saveUserId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val repo: UserRepository, @ApplicationContext private val context: Context) : ViewModel() {
+class LoginViewModel @Inject constructor(
+    private val repo: UserRepository,
+    @ApplicationContext private val context: Context
+) : ViewModel() {
     var state by mutableStateOf(LoginState())
         private set
 
@@ -44,6 +48,24 @@ class LoginViewModel @Inject constructor(private val repo: UserRepository, @Appl
                 print("F")
             }
         }
+    }
+
+    fun guestLogin(navController: NavController) {
+        val guestUser = UUID.randomUUID().toString()
+        viewModelScope.launch {
+            val responseRegister = repo.register(guestUser, guestUser)
+            val responseLogin = repo.login("eq.$guestUser", "eq.$guestUser")
+            if (responseLogin.isSuccessful && responseLogin.body()?.isNotEmpty() == true) {
+                val user = responseLogin.body()?.firstOrNull()
+                user?.let {
+                    saveUserId(context, it.id)
+                }
+            } else {
+                print("F")
+            }
+            navController.navigate(Routes.Dreams.route)
+        }
+
     }
 }
 
