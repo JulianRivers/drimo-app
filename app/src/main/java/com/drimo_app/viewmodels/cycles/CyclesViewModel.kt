@@ -35,8 +35,8 @@ class CyclesViewModel @Inject constructor(
             state = state.copy(showAskSleepTime = true)
             return
         }
-        val hourPlusMinutes = addMinutes(hour, state.minutesSleepTime)
-        val sleepCycles = cycleRepository.calculateSleepCycles(hourPlusMinutes, isWakeUpTime)
+        val hourPlusMinutes = if (!isWakeUpTime) addMinutes(hour, state.minutesSleepTime) else hour;
+        val sleepCycles = cycleRepository.calculateSleepCycles(hourPlusMinutes, isWakeUpTime, state.minutesSleepTime)
         state = state.copy(sleepCycles = sleepCycles)
         state = state.copy(hourCurrently = hourPlusMinutes)
         navController.navigate(Routes.CyclesResult.route)

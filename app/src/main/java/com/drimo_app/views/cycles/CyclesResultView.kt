@@ -57,9 +57,10 @@ fun ContentCyclesResultView(navController: NavController, cyclesViewModel: Cycle
             contentDescription = "background",
             modifier = Modifier.fillMaxSize()
         )
-
         Column(
-            modifier = Modifier.fillMaxSize().padding(WindowInsets.systemBars.asPaddingValues()),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(WindowInsets.systemBars.asPaddingValues()),
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Top
         ) {
@@ -101,12 +102,21 @@ fun ContentCyclesResultView(navController: NavController, cyclesViewModel: Cycle
                     color = White,
                     modifier = Modifier.padding(top = 35.dp)
                 )
-                Text(
-                    text = "Despierta a las",
-                    style = MaterialTheme.typography.headlineSmall,
-                    color = White,
-                    modifier = Modifier.padding(top = 35.dp)
-                )
+                if ((cyclesViewModel.state.isWakeUpTime)) {
+                    Text(
+                        text = "Duerme a las",
+                        style = MaterialTheme.typography.headlineSmall,
+                        color = White,
+                        modifier = Modifier.padding(top = 35.dp)
+                    )
+                } else {
+                    Text(
+                        text = "Despierta a las",
+                        style = MaterialTheme.typography.headlineSmall,
+                        color = White,
+                        modifier = Modifier.padding(top = 35.dp)
+                    )
+                }
             }
             HorizontalDivider(
                 modifier = Modifier
