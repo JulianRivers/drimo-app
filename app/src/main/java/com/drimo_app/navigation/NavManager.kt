@@ -1,5 +1,6 @@
 package com.drimo_app.navigation
 
+
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
@@ -10,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.drimo_app.model.app.Routes
+import com.drimo_app.viewmodels.blog.BlogViewModel
 import com.drimo_app.viewmodels.cycles.CyclesViewModel
 import com.drimo_app.viewmodels.dreams.AddDreamViewModel
 import com.drimo_app.viewmodels.dreams.UpdateDreamViewModel
@@ -26,7 +28,7 @@ import com.drimo_app.views.patterns.PatternsView
 import com.drimo_app.views.start.LoginView
 import com.drimo_app.views.start.RegisterView
 import com.drimo_app.views.start.SplashView
-
+import com.drimo_app.views.blog.BlogView
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NavManager(navController: NavHostController) {
@@ -76,7 +78,7 @@ fun NavManager(navController: NavHostController) {
 
         composable(route = Routes.Patterns.route) {
             val patternsViewModel: PatternsViewModel = hiltViewModel()
-            PatternsView(patternsViewModel)
+            PatternsView(patternsViewModel, navController)
         }
 
         composable(route = Routes.Cycles.route) {
@@ -85,6 +87,11 @@ fun NavManager(navController: NavHostController) {
 
         composable(route = Routes.CyclesResult.route) {
             CyclesResultView(navController, cyclesViewModel)
+        }
+
+        composable(route = Routes.Blog.route) {
+            val blogViewModel: BlogViewModel = hiltViewModel()
+            BlogView(navController, blogViewModel)
         }
 
 

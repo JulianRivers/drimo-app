@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.drimo_app.data.repository.DreamRepository
 import com.drimo_app.model.patterns.Factor
 import com.drimo_app.model.patterns.SleepPattern
+import com.drimo_app.util.getUserCyclesCompleted
 import com.drimo_app.util.getUserId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -14,7 +15,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PatternsViewModel @Inject constructor(private val repo: DreamRepository, @ApplicationContext private val context: Context): ViewModel() {
+class PatternsViewModel @Inject constructor(
+    private val repo: DreamRepository,
+    @ApplicationContext private val context: Context
+) : ViewModel() {
     var sleepPattern = mutableStateOf(SleepPattern(emptyList(), emptyList(), 0, 0))
         private set
 
@@ -41,19 +45,27 @@ class PatternsViewModel @Inject constructor(private val repo: DreamRepository, @
 
                     val factors = factorsCount.map { Factor(it.key, it.value) }
                     val tags = tagsCount.keys.toList()
-
+                    val cyclesPlanned = getUserCyclesCompleted(context)
                     // Actualiza el estado con los datos procesados
                     sleepPattern.value = SleepPattern(
                         factors = factors,
                         tags = tags,
                         completedCycles = dreams.size,
-                        plannedHours = dreams.sumOf { it.sleepFactors.size } // Ejemplo de suma
+                        plannedHours = cyclesPlanned
                     )
                 }
+
+
             } catch (e: Exception) {
                 // Manejo de errores
                 println("Error loading statistics: ${e.message}")
             }
+        }
+    }
+
+    fun logout() {
+        viewModelScope.launch {
+            com.drimo_app.util.clearUserId(context)
         }
     }
 }

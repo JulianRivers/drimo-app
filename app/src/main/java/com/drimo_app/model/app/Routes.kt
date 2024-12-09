@@ -12,5 +12,6 @@ sealed class Routes(val route: String) {
     object Patterns : Routes("Patterns")
     object Cycles : Routes("Cycles")
     object CyclesResult : Routes("CyclesResult")
+    object Blog : Routes("Blog")
 
 }

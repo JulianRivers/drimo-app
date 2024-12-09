@@ -8,13 +8,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
@@ -22,7 +22,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -34,13 +33,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import com.drimo_app.R
 import com.drimo_app.components.MainButton
 import com.drimo_app.components.MainTextField
 import com.drimo_app.components.MessageDialog
 import com.drimo_app.components.SpaceH
-import com.drimo_app.model.dreams.UpdateDreamState
 import com.drimo_app.viewmodels.dreams.UpdateDreamViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -71,11 +70,11 @@ fun ContentEditDreamView(navController: NavController, updateDreamViewModel: Upd
         Image(
             painter = painterResource(id = R.drawable.background_2),
             contentDescription = null,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize().zIndex(-1f)
         )
 
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxHeight(0.85f).padding(horizontal = 16.dp, vertical = 24.dp),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -98,7 +97,7 @@ fun ContentEditDreamView(navController: NavController, updateDreamViewModel: Upd
                 )
             }
 
-            SpaceH(size = 120.dp)
+            SpaceH(size = 50.dp)
             Text(text = "Edita tu sueño", style = MaterialTheme.typography.headlineMedium)
             SpaceH(size = 50.dp)
 

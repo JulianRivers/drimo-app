@@ -5,7 +5,12 @@ import java.util.Date
 
 
 class CycleRepository {
-    fun calculateSleepCycles(hour: Date, isWakeUpTime: Boolean = false): List<Date> {
+    fun calculateSleepCycles(
+        hour: Date,
+        isWakeUpTime: Boolean = false,
+        minutesSleepTime: Int
+    ): List<Date> {
+
         val calendar = Calendar.getInstance()
         calendar.time = hour
 
@@ -13,13 +18,12 @@ class CycleRepository {
         val numberOfCycles = 6
 
         for (i in 1..numberOfCycles) {
-            if (isWakeUpTime) calendar.add(Calendar.MINUTE, -90)
+            val cycleRest = if (i == 1) -(90+minutesSleepTime) else (-90);
+            if (isWakeUpTime) calendar.add(Calendar.MINUTE, cycleRest)
             else calendar.add(Calendar.MINUTE, 90)
 
             sleepCycles.add(calendar.time)
         }
-
-        if (isWakeUpTime) sleepCycles.reverse()
 
         return sleepCycles
     }

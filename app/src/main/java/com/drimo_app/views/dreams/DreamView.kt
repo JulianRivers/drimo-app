@@ -64,7 +64,7 @@ fun ContentDreamView(
 
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxHeight(0.85f)
                 .padding(horizontal = 16.dp, vertical = 24.dp),
             verticalArrangement = Arrangement.Top
         ) {
@@ -89,7 +89,7 @@ fun ContentDreamView(
                 style = MaterialTheme.typography.headlineMedium,
                 color = Color.White,
                 modifier = Modifier
-                    .padding(top = 80.dp)
+                    .padding(top = 50.dp)
                     .align(Alignment.CenterHorizontally)
             )
 

@@ -39,7 +39,7 @@ sealed class BottomBarScreen(
     )
 
     object Blog : BottomBarScreen(
-        route = Routes.Cycles.route,
+        route = Routes.Blog.route,
         title = "Blog",
         icon = Icons.Default.MailOutline
     )

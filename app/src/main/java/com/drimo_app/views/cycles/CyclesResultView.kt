@@ -6,9 +6,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -47,21 +50,24 @@ fun CyclesResultView(navController: NavController, cyclesViewModel: CyclesViewMo
 
 @Composable
 fun ContentCyclesResultView(navController: NavController, cyclesViewModel: CyclesViewModel) {
+    val action = if (cyclesViewModel.state.isWakeUpTime) "levantarás" else "dormirás"
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.background_3),
             contentDescription = "background",
             modifier = Modifier.fillMaxSize()
         )
-
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(WindowInsets.systemBars.asPaddingValues()),
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Top
         ) {
             Row {
                 IconButton(
-                    onClick = {navController.popBackStack() }, modifier = Modifier.padding(end = 8.dp, top = 22.dp)
+                    onClick = { navController.popBackStack() },
+                    modifier = Modifier.padding(end = 8.dp, top = 22.dp)
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -78,7 +84,7 @@ fun ContentCyclesResultView(navController: NavController, cyclesViewModel: Cycle
                 )
             }
             Text(
-                text = "Si te dormirás a las ${timeFormat.format(cyclesViewModel.state.hourCurrently)}",
+                text = "Si te $action a las ${timeFormat.format(cyclesViewModel.state.hourCurrently)}",
                 style = MaterialTheme.typography.headlineSmall,
                 color = LightGrey,
                 modifier = Modifier
@@ -96,12 +102,21 @@ fun ContentCyclesResultView(navController: NavController, cyclesViewModel: Cycle
                     color = White,
                     modifier = Modifier.padding(top = 35.dp)
                 )
-                Text(
-                    text = "Despierta a las",
-                    style = MaterialTheme.typography.headlineSmall,
-                    color = White,
-                    modifier = Modifier.padding(top = 35.dp)
-                )
+                if ((cyclesViewModel.state.isWakeUpTime)) {
+                    Text(
+                        text = "Duerme a las",
+                        style = MaterialTheme.typography.headlineSmall,
+                        color = White,
+                        modifier = Modifier.padding(top = 35.dp)
+                    )
+                } else {
+                    Text(
+                        text = "Despierta a las",
+                        style = MaterialTheme.typography.headlineSmall,
+                        color = White,
+                        modifier = Modifier.padding(top = 35.dp)
+                    )
+                }
             }
             HorizontalDivider(
                 modifier = Modifier
@@ -111,16 +126,21 @@ fun ContentCyclesResultView(navController: NavController, cyclesViewModel: Cycle
                 color = LightBlue,
             )
             SpaceH()
-           LazyColumn (  modifier = Modifier.fillMaxWidth()) {
-               itemsIndexed(cyclesViewModel.state.sleepCycles.reversed()) { index, hour ->
-                   CycleCard(
-                       index = cyclesViewModel.state.sleepCycles.size - index,
-                       hour = hour,
-                       onClick = { }
-                   )
-                   SpaceH()
-               }
-           }
+            LazyColumn(modifier = Modifier.fillMaxWidth()) {
+                itemsIndexed(cyclesViewModel.state.sleepCycles.reversed()) { index, hour ->
+                    CycleCard(
+                        index = cyclesViewModel.state.sleepCycles.size - index,
+                        hour = hour,
+                        onClick = {
+                            cyclesViewModel.sleepASleepCycle(
+                                navController,
+                                cyclesViewModel.state.sleepCycles.size - index
+                            )
+                        }
+                    )
+                    SpaceH()
+                }
+            }
         }
     }
 }

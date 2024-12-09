@@ -5,11 +5,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -28,9 +30,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.drimo_app.R
 import com.drimo_app.components.MainTextField
@@ -124,7 +128,7 @@ fun ContentCyclesView(navController: NavController, cyclesViewModel: CyclesViewM
             InfoCard(
                 title = "¿A qué hora despertar?",
                 description = "Calcula los ciclos de sueños necesarios según la hora que indiques que quieres dormir",
-                onClick = { cyclesViewModel.askWakeUpTime() }
+                onClick = { cyclesViewModel.askWakeUpTime(isWakeUpTime = false) }
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -132,7 +136,7 @@ fun ContentCyclesView(navController: NavController, cyclesViewModel: CyclesViewM
             InfoCard(
                 title = "¿A qué hora dormir?",
                 description = "Calcula los ciclos de sueño necesarios según la hora en la que indiques que te quieres levantar",
-                onClick = { /* No hay navegación en este momento */ }
+                onClick = { cyclesViewModel.askWakeUpTime(isWakeUpTime = true) }
             )
         }
     }
@@ -147,7 +151,9 @@ fun ContentCyclesView(navController: NavController, cyclesViewModel: CyclesViewM
 
     if (cyclesViewModel.state.showAskHourSleep) {
         ModalAskHourSleep(
-            onClick = {},
+            onClick = {
+                cyclesViewModel.calculateCyclesSleep(navController, currentTime)
+            },
             cyclesViewModel
         )
     }
@@ -194,7 +200,7 @@ private fun ModalAskSleepTime(onClick: () -> Unit, cyclesViewModel: CyclesViewMo
         title = {
             Text(
                 text = "Antes de comenzar",
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyLarge,
                 color = White,
             )
         },
@@ -210,7 +216,7 @@ private fun ModalAskSleepTime(onClick: () -> Unit, cyclesViewModel: CyclesViewMo
                     value = cyclesViewModel.state.minutesSleepTime.toString(),
                     onValueChange = {
                         it.toIntOrNull()?.let { intValue ->
-                            cyclesViewModel.onValueMinutesSleepTime(intValue)
+                            cyclesViewModel.onValue(intValue, "minutesSleepTime")
                         }
                     },
                     label = "Minutos",
@@ -234,11 +240,15 @@ private fun ModalAskSleepTime(onClick: () -> Unit, cyclesViewModel: CyclesViewMo
 private fun ModalAskHourSleep(onClick: () -> Unit, cyclesViewModel: CyclesViewModel) {
     AlertDialog(
         onDismissRequest = {
-            cyclesViewModel.closeModalAskSleepTime()
+            cyclesViewModel.closeModalAskHourSleep()
         },
         title = {
             Text(
-                text = "Antes de comenzar",
+                text =  if (cyclesViewModel.state.isWakeUpTime) {
+                    "¿A qué horas te despertarás?"
+                } else {
+                    "¿A qué horas te irás a la cama?"
+                },
                 style = MaterialTheme.typography.bodyMedium,
                 color = White,
             )
@@ -246,16 +256,67 @@ private fun ModalAskHourSleep(onClick: () -> Unit, cyclesViewModel: CyclesViewMo
         text = {
             Column {
                 Text(
-                    text = "Cuéntanos. ¿Cúanto tiempo te toma dormir? El tiempo que elijas se tomará como base para los cálculos en la aplicación.",
+                    text = "La aplicación supondrá que tardarás hasta ${cyclesViewModel.state.minutesSleepTime} minutos en dormir para realizar los cálculos.",
                     style = MaterialTheme.typography.bodyMedium,
                     color = White,
                 )
-                SpaceH(10.dp)
-                MainTextField(
-                    value = timeFormat.format(cyclesViewModel.state.hourCurrently),
-                    onValueChange = {},
-                    label = "Correo electronico",
+                Text(
+                    text = "Escribe la hora",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = White,
                 )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        MainTextField(
+                            value = cyclesViewModel.state.hour.toString().padStart(2, '0'),
+                            onValueChange = {
+                                val sanitizedValue = it.takeLast(2)
+                                sanitizedValue.toIntOrNull()?.let { intValue ->
+                                    cyclesViewModel.onValue(intValue, "hour")
+                                }
+                            },
+                            label = "",
+                            modifier = Modifier.width(52.dp),
+                            keyboardType = KeyboardType.Number
+                        )
+                        SpaceH()
+                        Text(
+                            text = "Hora",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = White
+                        )
+                    }
+                    Text(
+                        text = ":",
+                        style = TextStyle(color = Color.White, fontSize = 40.sp),
+                        color = White,
+                        modifier = Modifier.padding(horizontal = 8.dp)
+                    )
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        MainTextField(
+                            value = cyclesViewModel.state.minutes.toString().padStart(2, '0'),
+                            onValueChange = {
+                                val sanitizedValue = it.takeLast(2)
+                                sanitizedValue.toIntOrNull()?.let { intValue ->
+                                    cyclesViewModel.onValue(intValue, "minutes")
+                                }
+                            },
+                            label = "",
+                            modifier = Modifier.width(52.dp),
+                            keyboardType = KeyboardType.Number
+                        )
+                        SpaceH()
+                        Text(
+                            text = "Min.",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = White
+                        )
+                    }
+                }
             }
         },
         confirmButton = {
@@ -267,3 +328,5 @@ private fun ModalAskHourSleep(onClick: () -> Unit, cyclesViewModel: CyclesViewMo
         }
     )
 }
+
+
